@@ -6,24 +6,54 @@ SIMPLE RUMBLE !
 */
 
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
-//#include "Minipers.h"
 #include <iostream>
 #include <string>
 #include <vector>
-
 #include <sstream>
+
+#include "Agent.h"
 
 #define SPEED 10000
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
-////////////////////////////////////////////////////////////
-/// Entry point of application
-///
-/// \return Application exit code
-///
-////////////////////////////////////////////////////////////
-int main()
+
+/*void ThreadFunction(void* UserData)
+{
+	// Thread printing :
+	for (int i = 0; i < 10; ++i){ std::cout << "I'm the thread number 1" << std::endl; sf::Sleep(0.1f); }
+}*/
+
+int main(int argc, char** argv)
+{
+	srand(time(NULL));
+	// Create a thread with our function
+	/*sf::Thread Thread(&ThreadFunction);
+	// Start it !
+	Thread.Launch();
+	
+	// Main thread code :
+	for(int i = 0 ; i < 10 ; i++){ std::cout << "I'm the main thread" << std::endl; sf::Sleep(0.1f); }
+*/
+
+	Agent david, goliath;
+	//Création de 2 objets de type Personnage : david et goliath
+
+	for(int turn=0 ; turn < 6 ; turn++)
+	{
+		goliath.attack(david); 
+		david.attack(goliath); 
+		david.displayState();
+		goliath.displayState();
+	}
+
+	std::string nome="azerty";
+	std::cout << "Nome : " << nome << " " << nome[0] << " " << nome[5] << std::endl;
+	return EXIT_SUCCESS;
+}
+
+/*int main()
 {
 	int choixmenu = -1,i=255;
 	int compteur = 0;
@@ -137,34 +167,34 @@ int main()
 //	nom_display.SetText(heros.getNom());
 //	nom_display.SetPosition(48, 13);
 	nom_display.SetScale(0.6f, 0.6f);
-    /*
-	carre.AddPoint(200, 200, sf::Color(255, 255, 0), sf::Color(255,255,255));
-    carre.AddPoint(400, 200, sf::Color(255, 255, 0), sf::Color(255,0,0));
-    carre.AddPoint(400, 400, sf::Color(0, 255, 255), sf::Color(0,255,0));
-    carre.AddPoint(200, 400, sf::Color(0, 255, 255), sf::Color(0,0,255));
-    carre.EnableFill(true); // Remplissage activŽ
-    carre.EnableOutline(true); // Bordures activŽes
-    carre.SetOutlineWidth(10); // Bordures de taille 20 pixels
-	*/
+//    
+//	carre.AddPoint(200, 200, sf::Color(255, 255, 0), sf::Color(255,255,255));
+//    carre.AddPoint(400, 200, sf::Color(255, 255, 0), sf::Color(255,0,0));
+//    carre.AddPoint(400, 400, sf::Color(0, 255, 255), sf::Color(0,255,0));
+//    carre.AddPoint(200, 400, sf::Color(0, 255, 255), sf::Color(0,0,255));
+//    carre.EnableFill(true); // Remplissage activŽ
+//    carre.EnableOutline(true); // Bordures activŽes
+//    carre.SetOutlineWidth(10); // Bordures de taille 20 pixels
+	
 	backgroundSprite.Scale(6.0f, 6.0f);
 	backgroundSprite.SetPosition(0, 50);
 	houseSprite.Scale(6.0f, 6.0f);
 	houseSprite.SetPosition(0, 50);	
 	
-/*	if (!boutons.LoadFromFile("boutons.png")) // Si le chargement du fichier a ŽchouŽ
-	{
-		std::cout << "Erreur durant le chargement de l'image boutons" << std::endl;
-		return EXIT_FAILURE; // On ferme le programme
-	}
-	else // Si le chargement de l'image a rŽussi
-	{
-		boutonsSprite.SetImage(boutons);
-	}*/
+// 	if (!boutons.LoadFromFile("images/boutons.png")) // Si le chargement du fichier a ŽchouŽ
+//	{
+//		std::cout << "Erreur durant le chargement de l'image boutons" << std::endl;
+//		return EXIT_FAILURE; // On ferme le programme
+//	}
+//	else // Si le chargement de l'image a rŽussi
+//	{
+//		boutonsSprite.SetImage(boutons);
+//	}
 	
 	std::cout << "Done." << std::endl << "Loading Pictures ..." << std::endl;
 
 	
-	if (!imageBackground.LoadFromFile("tuilev1.png"))
+	if (!imageBackground.LoadFromFile("images/tuilev1.png"))
 	{
 		std::cout << "Erreur durant le chargement de l'image boutons" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
@@ -174,7 +204,7 @@ int main()
 		backgroundSprite.SetImage(imageBackground);
 	}
 	
-	if (!imageHouse.LoadFromFile("tuilev1_2.png"))
+	if (!imageHouse.LoadFromFile("images/tuilev1_2.png"))
 	{
 		std::cout << "Erreur durant le chargement de l'image boutons" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
@@ -185,13 +215,13 @@ int main()
 	}
 	
 		
-/*	boutonsSprite.SetPosition(100,100);
-	boutonsSprite.SetSubRect(sf::IntRect(200, 0, 350, 60));
-*/
+//	boutonsSprite.SetPosition(100,100);
+//	boutonsSprite.SetSubRect(sf::IntRect(200, 0, 350, 60));
+
 	// mechant.png
 	
-	//if (!perso.LoadFromFile("gifle.png")) // Si le chargement du fichier a ŽchouŽ
-	if (!perso.LoadFromFile("mechant2.png")) // Si le chargement du fichier a ŽchouŽ
+	//if (!perso.LoadFromFile("images/gifle.png")) // Si le chargement du fichier a ŽchouŽ
+	if (!perso.LoadFromFile("images/mechant2.png")) // Si le chargement du fichier a ŽchouŽ
 	{
 		std::cout << "Erreur durant le chargement de l'image gifle" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
@@ -205,7 +235,7 @@ int main()
 	persoSprite.SetSubRect(sf::IntRect(26, 71, 44, 96));
 	persoSprite.Scale(sf::Vector2f(2.0,2.0));
 
-	if (!imageEpee.LoadFromFile("epee.png"))
+	if (!imageEpee.LoadFromFile("images/epee.png"))
 	{
 		std::cout << "Erreur durant le chargement de l'image epee" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
@@ -215,13 +245,13 @@ int main()
 		armeSprite.SetImage(imageEpee);
 	}
 
-	if (!imageEpee_magique.LoadFromFile("epee2.png"))
+	if (!imageEpee_magique.LoadFromFile("images/epee2.png"))
 	{
 		std::cout << "Erreur durant le chargement de l'image epee2" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
 	}
 
-	if (!imageBouclier.LoadFromFile("bouclier.png"))
+	if (!imageBouclier.LoadFromFile("images/bouclier.png"))
 	{
 		std::cout << "Erreur durant le chargement de l'image bouclier" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
@@ -231,7 +261,7 @@ int main()
 		defenseSprite.SetImage(imageBouclier);
 	}
 
-	if (!imageBouclier_magique.LoadFromFile("bouclier2.png"))
+	if (!imageBouclier_magique.LoadFromFile("images/bouclier2.png"))
 	{
 		std::cout << "Erreur durant le chargement de l'image bouclier 2" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
@@ -301,255 +331,255 @@ int main()
         // Process events
 //        sf::Event Event;
 
-        /*while (App.GetEvent(Event))
-        {
-            // Close window : exit
-            if (Event.Type == sf::Event::Closed){ App.Close(); }
-							
-			/*if(Event.Type == sf::Event::KeyPressed)
-			{
-				//boutonsSprite.SetSubRect(sf::IntRect(200, 0, 350, 60));
-
-				if (App.GetInput().IsKeyDown(sf::Key::Left))
-				{
-					if(compteur == 0)
-					{
-						std::cout << "touche Gauche" << std::endl;
-						// sf::IntRect(18, 8, 18+48, 8+70)
-						persoSprite.SetSubRect(sf::IntRect(49, 104, 67, 104+23));
-						persoSprite.Move(-SPEED * ElapsedTime, 0);
-
-						compteur = 1;
-					}
-					else
-					{
-						if(compteur == 1)
-						{
-							std::cout << "touche Gauche" << std::endl;
-							persoSprite.SetSubRect(sf::IntRect(26, 103, 44, 103+24));
-							persoSprite.Move(-SPEED * ElapsedTime, 0);
-							compteur = 2;						
-						}
-						else
-						{
-							if(compteur == 2)
-							{
-								std::cout << "touche Gauche" << std::endl;
-								persoSprite.SetSubRect(sf::IntRect(1, 104, 20, 104+23));
-								persoSprite.Move(-SPEED * ElapsedTime, 0);
-								compteur = 0;
-							}
-						}
-					}
-				}
-				
-				if (App.GetInput().IsKeyDown(sf::Key::Right))
-				{
-					if(compteur == 0)
-					{
-						std::cout << "touche Droite 1" << std::endl;
-						// sf::IntRect(18, 8, 18+48, 8+70)
-						persoSprite.SetSubRect(sf::IntRect(54, 39, 71, 64));
-						persoSprite.Move(SPEED * ElapsedTime, 0);
-
-						compteur = 1;
-					}
-					else
-					{
-						if(compteur == 1)
-						{
-							std::cout << "touche Droite 2" << std::endl;
-							persoSprite.SetSubRect(sf::IntRect(30, 39, 49, 64));
-							persoSprite.Move(SPEED * ElapsedTime, 0);
-							compteur = 2;						
-						}
-						else
-						{
-							if(compteur == 2)
-							{
-								std::cout << "touche Droite 3" << std::endl;
-								persoSprite.SetSubRect(sf::IntRect(5, 39, 23, 64));
-								persoSprite.Move(SPEED * ElapsedTime, 0);
-								compteur = 0;
-							}
-						}
-					}
-				}
-				
-
-				if (App.GetInput().IsKeyDown(sf::Key::Up))
-				{
-					if(compteur == 0)
-					{
-						std::cout << "touche Droite" << std::endl;
-						// sf::IntRect(18, 8, 18+48, 8+70)
-						persoSprite.SetSubRect(sf::IntRect(49, 8, 67, 32));
-						persoSprite.Move(0, -SPEED * ElapsedTime);
-
-						compteur = 1;
-					}
-					else
-					{
-						if(compteur == 1)
-						{
-							std::cout << "touche Droite" << std::endl;
-							persoSprite.SetSubRect(sf::IntRect(26, 7, 44, 32));
-							persoSprite.Move(0, -SPEED * ElapsedTime);
-							compteur = 2;						
-						}
-						else
-						{
-							if(compteur == 2)
-							{
-								std::cout << "touche Droite" << std::endl;
-								persoSprite.SetSubRect(sf::IntRect(1, 8, 20, 32));
-								persoSprite.Move(0, -SPEED * ElapsedTime);
-								compteur = 0;
-							}
-						}
-					}
-				}
-				
-				
-				if (App.GetInput().IsKeyDown(sf::Key::Down))
-				{
-					if(compteur == 0)
-					{
-						std::cout << "touche Droite" << std::endl;
-						// sf::IntRect(18, 8, 18+48, 8+70)
-						persoSprite.SetSubRect(sf::IntRect(49, 72, 67, 96));
-						persoSprite.Move(0, SPEED * ElapsedTime);
-
-						compteur = 1;
-					}
-					else
-					{
-						if(compteur == 1)
-						{
-							std::cout << "touche Droite" << std::endl;
-							persoSprite.SetSubRect(sf::IntRect(26, 71, 44, 96));
-							persoSprite.Move(0, SPEED * ElapsedTime);
-							compteur = 2;						
-						}
-						else
-						{
-							if(compteur == 2)
-							{
-								std::cout << "touche Droite" << std::endl;
-								persoSprite.SetSubRect(sf::IntRect(1, 72, 20, 96));
-								persoSprite.Move(0, SPEED * ElapsedTime);
-								compteur = 0;
-							}
-						}
-					}
-				}
-				
-				if (App.GetInput().IsKeyDown(sf::Key::A))
-				{
-					heros.attaquer(heros);
-					std::cout << "Attaque pvs : " << heros.getVie() << std::endl;
-				}	
-
-				if (App.GetInput().IsKeyDown(sf::Key::Z))
-				{
-					heros.soigner(heros);
-					std::cout << "Soin ! pvs : " << heros.getVie() << std::endl;
-				}
-				if(App.GetInput().IsKeyDown(sf::Key::E))
-				{
-					heros.setPhysique(heros.getPhysique() + 100);
-					heros.setMana(heros.getMana() - 100);
-					std::cout << "Epee Magique ! Atk : " << heros.getPhysique() << std::endl;
-					armeSprite.SetImage(imageEpee_magique);
-				}
-				if(App.GetInput().IsKeyDown(sf::Key::B))
-				{
-					heros.setMental(heros.getMental() + 75);
-					heros.setMana(heros.getMana() - 75);
-					std::cout << "Bouclier magique ! Def : " << heros.getMental() << std::endl;
-					defenseSprite.SetImage(imageBouclier_magique);
-					
-				}
-				if(App.GetInput().IsKeyDown(sf::Key::N))
-				{
-					std::cout << "Back to basics" << std::endl;
-					armeSprite.SetImage(imageEpee);
-					defenseSprite.SetImage(imageBouclier);
-					// Dissocier les deux trucs suivants :
-					//heros.setPhysique(heros.getPhysique() - 100);
-					//heros.setMental(heros.getMental() - 75);
-					heros.setPhysique(50);
-					heros.setMental(50);
-					heros.setMana(heros.getMana_max());
-				}
-
-			}
-		}*/
-// ================================================================================================	
-
-//		App.Clear(sf::Color::Black);
-	
-		switch(stateOfZeGame)
-		{
-			case 1 :
-				// State : Title 
-				App.Clear(sf::Color::Blue);
-				App.Draw(titleText);
-				startColorState = !startColorState;
-				choice0.SetColor( ((startColorState) ? sf::Color::White : sf::Color::Red) );
-				App.Draw(choice0);
-	//			App.Display();
-			break;
-			case 2 :
-				App.Clear(sf::Color::Black);
-
-				App.Draw(choice1);
-				App.Draw(choice2);
-				App.Draw(choice3);
-				App.Draw(choice4);
-	//			App.Draw(stateText);
-	//			App.Display();
-
-			break;
-		
-			case 3 :
-				App.Clear(sf::Color::Green);
-
-				App.Draw(sf::Shape::Rectangle(10, 60, 790, 590, sf::Color(32,156,0, 0), 10, sf::Color(0,96,96,255)));
-				App.Draw(persoSprite);
-
-				// #################### Interface de jeu #################### 
-				// Top
-				nom_display.SetPosition(5, 5);
-				pvs.SetPosition(40, 5);
-				mana.SetPosition(760, 5);
-
-				App.Draw(sf::Shape::Rectangle(80, 5, 80+300, 25, sf::Color(64,0,0,255), 0, sf::Color(255,255,0)));
-			//	App.Draw(sf::Shape::Rectangle(80, 5, 80+300 * heros.getVie() / heros.getVie_max(), 25, sf::Color(128,0,0), 0, sf::Color(255,255,0))); //590 * ( 1.1 - heros.getVie() / 999.0)
-				App.Draw(sf::Shape::Rectangle(80+310, 5, 80+310+360, 25, sf::Color(0,0,64,255), 0, sf::Color(255,255,0)));
-			//	App.Draw(sf::Shape::Rectangle(80 + 310 + 360  - 360 * heros.getMana() / heros.getMana_max(), 5, 80+310+360, 25, sf::Color(0,0,128), 0, sf::Color(255,255,0))); //590 * ( 1.1 - heros.getVie() / 999.0)		
-				// Bottom left
-				armeSprite.SetPosition(15, 505);
-				defenseSprite.SetPosition(75, 525);
-					
-				App.Draw(sf::Shape::Circle(40, 530, 30, sf::Color(0,96,96,255), -3, sf::Color::Black));
-				App.Draw(sf::Shape::Circle(95, 560, 30, sf::Color(0,96,96,255), -3, sf::Color::Black));
-				App.Draw(pvs);
-				App.Draw(mana);
-				App.Draw(nom_display);
-				App.Draw(armeSprite);
-				App.Draw(defenseSprite);
-//				App.Draw(stateText);
-//				App.Display();
-			break;
-			default :
-				std::cout << "Display Error" << std::endl;
-			break;
-		}
-		App.Draw(stateText);
-		// Finally, display the rendered frame on screen
-		App.Display();
-    }
-
+//        while (App.GetEvent(Event))
+//        {
+//            // Close window : exit
+//            if (Event.Type == sf::Event::Closed){ App.Close(); }
+//							
+//		//	if(Event.Type == sf::Event::KeyPressed)
+//		//	{
+//		//		//boutonsSprite.SetSubRect(sf::IntRect(200, 0, 350, 60));
+//
+//		//		if (App.GetInput().IsKeyDown(sf::Key::Left))
+//		//		{
+//		//			if(compteur == 0)
+//		//			{
+//		//				std::cout << "touche Gauche" << std::endl;
+//		//				// sf::IntRect(18, 8, 18+48, 8+70)
+//		//				persoSprite.SetSubRect(sf::IntRect(49, 104, 67, 104+23));
+//		//				persoSprite.Move(-SPEED * ElapsedTime, 0);
+//
+//		//				compteur = 1;
+//		//			}
+//		//			else
+//		//			{
+//		//				if(compteur == 1)
+//		//				{
+//		//					std::cout << "touche Gauche" << std::endl;
+//		//					persoSprite.SetSubRect(sf::IntRect(26, 103, 44, 103+24));
+//		//					persoSprite.Move(-SPEED * ElapsedTime, 0);
+//		//					compteur = 2;						
+//		//				}
+//		//				else
+//		//				{
+//		//					if(compteur == 2)
+//		//					{
+//		//						std::cout << "touche Gauche" << std::endl;
+//		//						persoSprite.SetSubRect(sf::IntRect(1, 104, 20, 104+23));
+//		//						persoSprite.Move(-SPEED * ElapsedTime, 0);
+//		//						compteur = 0;
+//		//					}
+//		//				}
+//		//			}
+//		//		}
+//		//		
+//		//		if (App.GetInput().IsKeyDown(sf::Key::Right))
+//		//		{
+//		//			if(compteur == 0)
+//		//			{
+//		//				std::cout << "touche Droite 1" << std::endl;
+//		//				// sf::IntRect(18, 8, 18+48, 8+70)
+//		//				persoSprite.SetSubRect(sf::IntRect(54, 39, 71, 64));
+//		//				persoSprite.Move(SPEED * ElapsedTime, 0);
+//
+//		//				compteur = 1;
+//		//			}
+//		//			else
+//		//			{
+//		//				if(compteur == 1)
+//		//				{
+//		//					std::cout << "touche Droite 2" << std::endl;
+//		//					persoSprite.SetSubRect(sf::IntRect(30, 39, 49, 64));
+//		//					persoSprite.Move(SPEED * ElapsedTime, 0);
+//		//					compteur = 2;						
+//		//				}
+//		//				else
+//		//				{
+//		//					if(compteur == 2)
+//		//					{
+//		//						std::cout << "touche Droite 3" << std::endl;
+//		//						persoSprite.SetSubRect(sf::IntRect(5, 39, 23, 64));
+//		//						persoSprite.Move(SPEED * ElapsedTime, 0);
+//		//						compteur = 0;
+//		//					}
+//		//				}
+//		//			}
+//		//		}
+//		//		
+//
+//		//		if (App.GetInput().IsKeyDown(sf::Key::Up))
+//		//		{
+//		//			if(compteur == 0)
+//		//			{
+//		//				std::cout << "touche Droite" << std::endl;
+//		//				// sf::IntRect(18, 8, 18+48, 8+70)
+//		//				persoSprite.SetSubRect(sf::IntRect(49, 8, 67, 32));
+//		//				persoSprite.Move(0, -SPEED * ElapsedTime);
+//
+//		//				compteur = 1;
+//		//			}
+//		//			else
+//		//			{
+//		//				if(compteur == 1)
+//		//				{
+//		//					std::cout << "touche Droite" << std::endl;
+//		//					persoSprite.SetSubRect(sf::IntRect(26, 7, 44, 32));
+//		//					persoSprite.Move(0, -SPEED * ElapsedTime);
+//		//					compteur = 2;						
+//		//				}
+//		//				else
+//		//				{
+//		//					if(compteur == 2)
+//		//					{
+//		//						std::cout << "touche Droite" << std::endl;
+//		//						persoSprite.SetSubRect(sf::IntRect(1, 8, 20, 32));
+//		//						persoSprite.Move(0, -SPEED * ElapsedTime);
+//		//						compteur = 0;
+//		//					}
+//		//				}
+//		//			}
+//		//		}
+//		//		
+//		//		
+//		//		if (App.GetInput().IsKeyDown(sf::Key::Down))
+//		//		{
+//		//			if(compteur == 0)
+//		//			{
+//		//				std::cout << "touche Droite" << std::endl;
+//		//				// sf::IntRect(18, 8, 18+48, 8+70)
+//		//				persoSprite.SetSubRect(sf::IntRect(49, 72, 67, 96));
+//		//				persoSprite.Move(0, SPEED * ElapsedTime);
+//
+//		//				compteur = 1;
+//		//			}
+//		//			else
+//		//			{
+//		//				if(compteur == 1)
+//		//				{
+//		//					std::cout << "touche Droite" << std::endl;
+//		//					persoSprite.SetSubRect(sf::IntRect(26, 71, 44, 96));
+//		//					persoSprite.Move(0, SPEED * ElapsedTime);
+//		//					compteur = 2;						
+//		//				}
+//		//				else
+//		//				{
+//		//					if(compteur == 2)
+//		//					{
+//		//						std::cout << "touche Droite" << std::endl;
+//		//						persoSprite.SetSubRect(sf::IntRect(1, 72, 20, 96));
+//		//						persoSprite.Move(0, SPEED * ElapsedTime);
+//		//						compteur = 0;
+//		//					}
+//		//				}
+//		//			}
+//		//		}
+//		//		
+//		//		if (App.GetInput().IsKeyDown(sf::Key::A))
+//		//		{
+//		//			heros.attaquer(heros);
+//		//			std::cout << "Attaque pvs : " << heros.getVie() << std::endl;
+//		//		}	
+//
+//		//		if (App.GetInput().IsKeyDown(sf::Key::Z))
+//		//		{
+//		//			heros.soigner(heros);
+//		//			std::cout << "Soin ! pvs : " << heros.getVie() << std::endl;
+//		//		}
+//		//		if(App.GetInput().IsKeyDown(sf::Key::E))
+//		//		{
+//		//			heros.setPhysique(heros.getPhysique() + 100);
+//		//			heros.setMana(heros.getMana() - 100);
+//		//			std::cout << "Epee Magique ! Atk : " << heros.getPhysique() << std::endl;
+//		//			armeSprite.SetImage(imageEpee_magique);
+//		//		}
+//		//		if(App.GetInput().IsKeyDown(sf::Key::B))
+//		//		{
+//		//			heros.setMental(heros.getMental() + 75);
+//		//			heros.setMana(heros.getMana() - 75);
+//		//			std::cout << "Bouclier magique ! Def : " << heros.getMental() << std::endl;
+//		//			defenseSprite.SetImage(imageBouclier_magique);
+//		//			
+//		//		}
+//		//		if(App.GetInput().IsKeyDown(sf::Key::N))
+//		//		{
+//		//			std::cout << "Back to basics" << std::endl;
+//		//			armeSprite.SetImage(imageEpee);
+//		//			defenseSprite.SetImage(imageBouclier);
+//		//			// Dissocier les deux trucs suivants :
+//		//			//heros.setPhysique(heros.getPhysique() - 100);
+//		//			//heros.setMental(heros.getMental() - 75);
+//		//			heros.setPhysique(50);
+//		//			heros.setMental(50);
+//		//			heros.setMana(heros.getMana_max());
+//		//		}
+//
+//		//	}
+//		//}
+//// ================================================================================================	
+//
+////		App.Clear(sf::Color::Black);
+//	
+//		switch(stateOfZeGame)
+//		{
+//			case 1 :
+//				// State : Title 
+//				App.Clear(sf::Color::Blue);
+//				App.Draw(titleText);
+//				startColorState = !startColorState;
+//				choice0.SetColor( ((startColorState) ? sf::Color::White : sf::Color::Red) );
+//				App.Draw(choice0);
+//	//			App.Display();
+//			break;
+//			case 2 :
+//				App.Clear(sf::Color::Black);
+//
+//				App.Draw(choice1);
+//				App.Draw(choice2);
+//				App.Draw(choice3);
+//				App.Draw(choice4);
+//	//			App.Draw(stateText);
+//	//			App.Display();
+//
+//			break;
+//		
+//			case 3 :
+//				App.Clear(sf::Color::Green);
+//
+//				App.Draw(sf::Shape::Rectangle(10, 60, 790, 590, sf::Color(32,156,0, 0), 10, sf::Color(0,96,96,255)));
+//				App.Draw(persoSprite);
+//
+//				// #################### Interface de jeu #################### 
+//				// Top
+//				nom_display.SetPosition(5, 5);
+//				pvs.SetPosition(40, 5);
+//				mana.SetPosition(760, 5);
+//
+//				App.Draw(sf::Shape::Rectangle(80, 5, 80+300, 25, sf::Color(64,0,0,255), 0, sf::Color(255,255,0)));
+//			//	App.Draw(sf::Shape::Rectangle(80, 5, 80+300 * heros.getVie() / heros.getVie_max(), 25, sf::Color(128,0,0), 0, sf::Color(255,255,0))); //590 * ( 1.1 - heros.getVie() / 999.0)
+//				App.Draw(sf::Shape::Rectangle(80+310, 5, 80+310+360, 25, sf::Color(0,0,64,255), 0, sf::Color(255,255,0)));
+//			//	App.Draw(sf::Shape::Rectangle(80 + 310 + 360  - 360 * heros.getMana() / heros.getMana_max(), 5, 80+310+360, 25, sf::Color(0,0,128), 0, sf::Color(255,255,0))); //590 * ( 1.1 - heros.getVie() / 999.0)		
+//				// Bottom left
+//				armeSprite.SetPosition(15, 505);
+//				defenseSprite.SetPosition(75, 525);
+//					
+//				App.Draw(sf::Shape::Circle(40, 530, 30, sf::Color(0,96,96,255), -3, sf::Color::Black));
+//				App.Draw(sf::Shape::Circle(95, 560, 30, sf::Color(0,96,96,255), -3, sf::Color::Black));
+//				App.Draw(pvs);
+//				App.Draw(mana);
+//				App.Draw(nom_display);
+//				App.Draw(armeSprite);
+//				App.Draw(defenseSprite);
+////				App.Draw(stateText);
+////				App.Display();
+//			break;
+//			default :
+//				std::cout << "Display Error" << std::endl;
+//			break;
+//		}
+//		App.Draw(stateText);
+//		// Finally, display the rendered frame on screen
+//		App.Display();
+//    }
+//
     return EXIT_SUCCESS;
-}
+} */

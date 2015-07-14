@@ -9,6 +9,7 @@
 
 #include "Map.h"
 
+/*
 Map::Map()
 {
 	tileNumber = mapWidth = mapHeight = offsetX = offsetY = 0;
@@ -44,3 +45,4 @@ void Map::randomizeMap(int width, int height, const std::string tilesetname)
 		tileSet.at(i).getPosition() = sf::Vector2<float>(x,y);
 	}
 }
+*/

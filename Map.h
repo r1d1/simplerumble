@@ -14,7 +14,7 @@
 #define TILE_WIDTH 32
 #define TILE_HEIGHT 32
 
-#include <iostream>
+/*#include <iostream>
 #include <string>
 #include <vector>
 
@@ -53,5 +53,5 @@ class Map
 		unsigned int getTile(int x, int y);
 		void randomizeMap(int width, int height, const std::string tilesetname);
 };
-
+*/
 #endif
