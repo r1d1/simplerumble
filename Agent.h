@@ -14,9 +14,9 @@ class Agent
 		int m_Life;
 		int m_MaxLife;
 		//int m_AttackDamage;
-		Attack m_AbilityOne;
-		Attack m_AbilityTwo;
-		Attack m_AbilityThree;
+		Attack * m_AbilityOne;
+		Attack * m_AbilityTwo;
+		Attack * m_AbilityThree;
 
 	public:
 		Agent();

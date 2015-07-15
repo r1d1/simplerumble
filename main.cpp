@@ -14,6 +14,7 @@ SIMPLE RUMBLE !
 #include <sstream>
 
 #include "Agent.h"
+#include "Attack.h"
 #include "utils.h"
 
 #define SPEED 10000
@@ -37,21 +38,26 @@ int main(int argc, char** argv)
 	// Main thread code :
 	for(int i = 0 ; i < 10 ; i++){ std::cout << "I'm the main thread" << std::endl; sf::Sleep(0.1f); }
 */
-
-	Agent david("", 10, "Wooden sword", 3, 500);
-	Agent goliath("", 9, "Axe", 4, 500);
+	Attack sword("Sword", 3, 450);
+	Attack axe("Axe", 5, 350);
+	Agent david("", 100, "Wooden sword", 3, 500);
+	Agent goliath("", 90, "Axe", 4, 500);
 	//Création de 2 objets de type Personnage : david et goliath
 
-	for(int turn=0 ; turn < 6 ; turn++)
+	for(int turn=0 ; turn < 10 ; turn++)
 	{
+		std::cout << "Turn " << turn << std::endl;
 		goliath.attack(david); 
 		david.attack(goliath); 
+		std::cout << "attcks done" << std::endl;
 		david.displayState();
 		goliath.displayState();
+		if(turn == 5){ david.changeAttack(&axe); }
+		if(turn == 7){ goliath.changeAttack(&sword); }
+		std::cout << "---------------------------" << std::endl;
 	}
 
-	std::string nome="azerty";
-	std::cout << "Nome : " << nome << " " << nome[0] << " " << nome[5] << std::endl;
+
 	return EXIT_SUCCESS;
 }
 

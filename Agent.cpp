@@ -1,25 +1,51 @@
 #include "Agent.h"
 #include "utils.h"
 
-Agent::Agent() : m_MaxLife(5), m_Life(5), m_AbilityOne("None", 0, -1)
+Agent::Agent() : m_MaxLife(5), m_Life(5), m_AbilityOne(0)
 {
+	std::cout << "Dft Ctor" << std::endl;
+	//m_AbilityOne = new Attack("None", 0, -1);
+	//m_AbilityTwo = new Attack("None", 0, -1);
+	//m_AbilityThree = new Attack("None", 0, -1);
 	int nameLength = 3+rand()%10;
 
 	m_Name = randomNameGenerator(nameLength);
+	std::cout << "Done ..." << std::endl;
 }
 
-Agent::Agent(std::string myname, int maxlife, std::string wname, int dmg, int res) : m_Name(myname), m_MaxLife(maxlife), m_Life(maxlife), m_AbilityOne(wname, dmg, res)
+Agent::Agent(std::string myname, int maxlife, std::string wname, int dmg, int res) : m_Name(myname), m_MaxLife(maxlife), m_Life(maxlife), m_AbilityOne(0), m_AbilityTwo(0), m_AbilityThree(0) 
 {
+	std::cout << "Comp Ctor" << std::endl;
+	//m_AbilityOne = new Attack(wname, dmg, res);
+	//m_AbilityTwo = new Attack("None", 0, -1);
+	//m_AbilityThree = new Attack("None", 0, -1);
 	int nameLength = 3+rand()%10;
 	if(myname.empty()){ m_Name = randomNameGenerator(nameLength); }
+
+	std::cout << "Done ..." << std::endl;
 }
 
-Agent::~Agent(){}
+Agent::~Agent()
+{
+	// Weapons are external, don't deallocate, it must be done where they have been allocated !
+	//std::cout << m_Name << " ab 1" << std::endl;
+	//if(m_AbilityOne != 0){ delete m_AbilityOne; }
+	//std::cout << m_Name << " ab 2" << std::endl;
+	//if(m_AbilityTwo != 0){ delete m_AbilityTwo; }
+	//std::cout << m_Name << " ab 3" << std::endl;
+	//if(m_AbilityThree != 0){ delete m_AbilityThree; }
+	m_AbilityOne = m_AbilityTwo = m_AbilityThree = 0;
+}
 
 int Agent::getLife() const { return m_Life; }
 int Agent::getMaxLife() const { return m_MaxLife; }
 bool Agent::isAlive() const { return m_Life > 0; }
-void Agent::displayState() const{ std::cout << "I'm " << m_Name << ", I've " << m_Life << "/" << m_MaxLife << " HP and I'm fighting with " << m_AbilityOne.getName() << " that does " << m_AbilityOne.getDamage() << std::endl;  }
+void Agent::displayState() const
+{
+	std::cout << "I'm " << m_Name << ", I've " << m_Life << "/" << m_MaxLife << " HP and I'm fighting with " << std::endl;
+	if( m_AbilityOne != 0){ std::cout << m_AbilityOne->getName() << " that does " << m_AbilityOne->getDamage() << std::endl; }
+	else{ std::cout << "... nothing ! " << std::endl; }
+}
 
 void Agent::takeDamage(int value)
 {
@@ -27,5 +53,10 @@ void Agent::takeDamage(int value)
 	m_Life = (delta < 0 ? 0 : delta);
 }
 
-void Agent::attack(Agent & target){ target.takeDamage(m_AbilityOne.getDamage()); }
-void Agent::changeAttack(Attack * atk){ m_AbilityOne.change(atk->getName(), atk->getDamage(), atk->getResistance()); }
+void Agent::attack(Agent & target){ if(m_AbilityOne != 0){ target.takeDamage(m_AbilityOne->getDamage()); } }
+
+void Agent::changeAttack(Attack * atk)
+{
+	m_AbilityOne = atk;
+	//m_AbilityOne->change(atk->getName(), atk->getDamage(), atk->getResistance());
+}
