@@ -14,6 +14,7 @@ SIMPLE RUMBLE !
 #include <sstream>
 
 #include "Agent.h"
+#include "utils.h"
 
 #define SPEED 10000
 #define WINDOW_WIDTH 800
@@ -22,7 +23,7 @@ SIMPLE RUMBLE !
 /*void ThreadFunction(void* UserData)
 {
 	// Thread printing :
-	for (int i = 0; i < 10; ++i){ std::cout << "I'm the thread number 1" << std::endl; sf::Sleep(0.1f); }
+	for (int = 0; i < 10; ++i){ std::cout << "I'm the thread number 1" << std::endl; sf::Sleep(0.1f); }
 }*/
 
 int main(int argc, char** argv)
@@ -37,7 +38,8 @@ int main(int argc, char** argv)
 	for(int i = 0 ; i < 10 ; i++){ std::cout << "I'm the main thread" << std::endl; sf::Sleep(0.1f); }
 */
 
-	Agent david, goliath;
+	Agent david("", 10, "Wooden sword", 3, 500);
+	Agent goliath("", 9, "Axe", 4, 500);
 	//Création de 2 objets de type Personnage : david et goliath
 
 	for(int turn=0 ; turn < 6 ; turn++)
