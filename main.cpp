@@ -47,9 +47,10 @@ int main(int argc, char** argv)
 
 	for(int turn=0 ; turn < 15 ; turn++)
 	{
+		int choiceEnemy = rand() % 4;
 		std::cout << "What to do ?" << std::endl << "# 0 : Attack" << std::endl << "# 1 : Defend" << std::endl << "# 2 : Surrender" << std::endl;
 		std::cin >> choice;
-		std::cout << "Turn " << turn << " you choose " << choice << std::endl;
+		std::cout << "Turn " << turn << " you choose " << choice << " you enemy choose " << choiceEnemy << std::endl;
 		switch(choice)
 		{
 			case 0:
@@ -69,7 +70,25 @@ int main(int argc, char** argv)
 				npc2.takeDamage(7);
 			break;
 		}
-		npc1.attack(npc2);
+		switch(choiceEnemy)
+		{
+			case 0:
+				std::cout << "Attacking !" << std::endl;
+				npc1.attack(npc2);
+			break;
+			case 1:
+				std::cout << "Defending !" << std::endl;
+				npc1.defend();
+			break;
+			case 2:
+				std::cout << "Surrender !" << std::endl;
+				npc1.surrender();
+			break;
+			default:
+				std::cout << "Wrong choice !" << std::endl;
+				npc1.takeDamage(7);
+			break;
+		}
 		npc1.displayState();
 		npc2.displayState();
 		if(turn == 5){ npc1.changeAttack(&axe); }
