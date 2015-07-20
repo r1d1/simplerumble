@@ -42,9 +42,7 @@ int Agent::getMaxLife() const { return m_MaxLife; }
 bool Agent::isAlive() const { return m_Life > 0; }
 void Agent::displayState() const
 {
-	std::cout << "I'm " << m_Name << ", I've " << m_Life << "/" << m_MaxLife << " HP and I'm fighting with " << std::endl;
-	if( m_AbilityOne != 0){ std::cout << m_AbilityOne->getName() << " that does " << m_AbilityOne->getDamage() << std::endl; }
-	else{ std::cout << "... nothing ! " << std::endl; }
+	std::cout << "I'm \033[1m" << m_Name << "\033[21m, I've \033[" << ((float(m_Life) / float(m_MaxLife) < 0.3) ? "91m" : ((float(m_Life) / float(m_MaxLife) < 0.6) ? "93m" : "92m")) << m_Life << "\033[39m/" << m_MaxLife << " HP and I'm fighting with " << ( (m_AbilityOne != 0) ? m_AbilityOne->getName() : "nothing") << " that does " << ( (m_AbilityOne != 0) ?  m_AbilityOne->getDamage() : 0) << std::endl;
 }
 
 void Agent::takeDamage(int value)

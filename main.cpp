@@ -39,12 +39,12 @@ int main(int argc, char** argv)
 	for(int i = 0 ; i < 10 ; i++){ std::cout << "I'm the main thread" << std::endl; sf::Sleep(0.1f); }
 */
 	Attack sword("Sword", 3, 450);
-	Attack axe("Axe", 5, 350);
+	Attack axe("Axe", 10, 350);
 	Agent david("", 100, "Wooden sword", 3, 500);
 	Agent goliath("", 90, "Axe", 4, 500);
-	//Création de 2 objets de type Personnage : david et goliath
+	//CrÃ©ation de 2 objets de type Personnage : david et goliath
 
-	for(int turn=0 ; turn < 10 ; turn++)
+	for(int turn=0 ; turn < 15 ; turn++)
 	{
 		std::cout << "Turn " << turn << std::endl;
 		goliath.attack(david); 
@@ -180,8 +180,8 @@ int main(int argc, char** argv)
 //    carre.AddPoint(400, 200, sf::Color(255, 255, 0), sf::Color(255,0,0));
 //    carre.AddPoint(400, 400, sf::Color(0, 255, 255), sf::Color(0,255,0));
 //    carre.AddPoint(200, 400, sf::Color(0, 255, 255), sf::Color(0,0,255));
-//    carre.EnableFill(true); // Remplissage activŽ
-//    carre.EnableOutline(true); // Bordures activŽes
+//    carre.EnableFill(true); // Remplissage activÂŽ
+//    carre.EnableOutline(true); // Bordures activÂŽes
 //    carre.SetOutlineWidth(10); // Bordures de taille 20 pixels
 	
 	backgroundSprite.Scale(6.0f, 6.0f);
@@ -189,12 +189,12 @@ int main(int argc, char** argv)
 	houseSprite.Scale(6.0f, 6.0f);
 	houseSprite.SetPosition(0, 50);	
 	
-// 	if (!boutons.LoadFromFile("images/boutons.png")) // Si le chargement du fichier a ŽchouŽ
+// 	if (!boutons.LoadFromFile("images/boutons.png")) // Si le chargement du fichier a ÂŽchouÂŽ
 //	{
 //		std::cout << "Erreur durant le chargement de l'image boutons" << std::endl;
 //		return EXIT_FAILURE; // On ferme le programme
 //	}
-//	else // Si le chargement de l'image a rŽussi
+//	else // Si le chargement de l'image a rÂŽussi
 //	{
 //		boutonsSprite.SetImage(boutons);
 //	}
@@ -207,7 +207,7 @@ int main(int argc, char** argv)
 		std::cout << "Erreur durant le chargement de l'image boutons" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
 	}
-	else // Si le chargement de l'image a rŽussi
+	else // Si le chargement de l'image a rÂŽussi
 	{
 		backgroundSprite.SetImage(imageBackground);
 	}
@@ -217,7 +217,7 @@ int main(int argc, char** argv)
 		std::cout << "Erreur durant le chargement de l'image boutons" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
 	}
-	else // Si le chargement de l'image a rŽussi
+	else // Si le chargement de l'image a rÂŽussi
 	{
 		houseSprite.SetImage(imageHouse);
 	}
@@ -228,13 +228,13 @@ int main(int argc, char** argv)
 
 	// mechant.png
 	
-	//if (!perso.LoadFromFile("images/gifle.png")) // Si le chargement du fichier a ŽchouŽ
-	if (!perso.LoadFromFile("images/mechant2.png")) // Si le chargement du fichier a ŽchouŽ
+	//if (!perso.LoadFromFile("images/gifle.png")) // Si le chargement du fichier a ÂŽchouÂŽ
+	if (!perso.LoadFromFile("images/mechant2.png")) // Si le chargement du fichier a ÂŽchouÂŽ
 	{
 		std::cout << "Erreur durant le chargement de l'image gifle" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
 	}
-	else // Si le chargement de l'image a rŽussi
+	else // Si le chargement de l'image a rÂŽussi
 	{
 		persoSprite.SetImage(perso);
 	}
@@ -248,7 +248,7 @@ int main(int argc, char** argv)
 		std::cout << "Erreur durant le chargement de l'image epee" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
 	}
-	else // Si le chargement de l'image a rŽussi
+	else // Si le chargement de l'image a rÂŽussi
 	{
 		armeSprite.SetImage(imageEpee);
 	}
@@ -264,7 +264,7 @@ int main(int argc, char** argv)
 		std::cout << "Erreur durant le chargement de l'image bouclier" << std::endl;
 		return EXIT_FAILURE; // On ferme le programme
 	}
-	else // Si le chargement de l'image a rŽussi
+	else // Si le chargement de l'image a rÂŽussi
 	{
 		defenseSprite.SetImage(imageBouclier);
 	}
