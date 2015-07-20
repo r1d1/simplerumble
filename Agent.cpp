@@ -13,7 +13,7 @@ Agent::Agent() : m_MaxLife(5), m_Life(5), m_AbilityOne(0)
 	std::cout << "Done ..." << std::endl;
 }
 
-Agent::Agent(std::string myname, int maxlife, std::string wname, int dmg, int res) : m_Name(myname), m_MaxLife(maxlife), m_Life(maxlife), m_AbilityOne(0), m_AbilityTwo(0), m_AbilityThree(0) 
+Agent::Agent(std::string myname, int maxlife, std::string wname, int dmg, int res) : m_Name(myname), m_MaxLife(maxlife), m_Life(maxlife), m_Shield(1), m_defending(1), m_AbilityOne(0), m_AbilityTwo(0), m_AbilityThree(0) 
 {
 	std::cout << "Comp Ctor" << std::endl;
 	//m_AbilityOne = new Attack(wname, dmg, res);
@@ -47,14 +47,30 @@ void Agent::displayState() const
 
 void Agent::takeDamage(int value)
 {
-	int delta = m_Life - value;
+	int delta = m_Life - (value - m_defending * m_Shield);
 	m_Life = (delta < 0 ? 0 : delta);
 }
 
-void Agent::attack(Agent & target){ if(m_AbilityOne != 0){ target.takeDamage(m_AbilityOne->getDamage()); } }
+void Agent::attack(Agent & target)
+{
+	m_defending = 1;
+	if(m_AbilityOne != 0){ target.takeDamage(m_AbilityOne->getDamage()); }
+}
 
 void Agent::changeAttack(Attack * atk)
 {
 	m_AbilityOne = atk;
+	m_defending = 1;
 	//m_AbilityOne->change(atk->getName(), atk->getDamage(), atk->getResistance());
+}
+
+
+void Agent::defend()
+{
+	m_defending = 2;
+}
+
+void Agent::surrender()
+{
+	m_defending = -1;
 }

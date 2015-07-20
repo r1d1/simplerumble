@@ -40,20 +40,40 @@ int main(int argc, char** argv)
 */
 	Attack sword("Sword", 3, 450);
 	Attack axe("Axe", 10, 350);
-	Agent david("", 100, "Wooden sword", 3, 500);
-	Agent goliath("", 90, "Axe", 4, 500);
-	//Création de 2 objets de type Personnage : david et goliath
+	Agent npc1("", 100, "Wooden sword", 3, 500);
+	Agent npc2("", 90, "Axe", 4, 500);
+	//Création de 2 objets de type Personnage : npc1 et npc2
+	int choice;
 
 	for(int turn=0 ; turn < 15 ; turn++)
 	{
-		std::cout << "Turn " << turn << std::endl;
-		goliath.attack(david); 
-		david.attack(goliath); 
-		std::cout << "attcks done" << std::endl;
-		david.displayState();
-		goliath.displayState();
-		if(turn == 5){ david.changeAttack(&axe); }
-		if(turn == 7){ goliath.changeAttack(&sword); }
+		std::cout << "What to do ?" << std::endl << "# 0 : Attack" << std::endl << "# 1 : Defend" << std::endl << "# 2 : Surrender" << std::endl;
+		std::cin >> choice;
+		std::cout << "Turn " << turn << " you choose " << choice << std::endl;
+		switch(choice)
+		{
+			case 0:
+				std::cout << "Attacking !" << std::endl;
+				npc2.attack(npc1);
+			break;
+			case 1:
+				std::cout << "Defending !" << std::endl;
+				npc2.defend();
+			break;
+			case 2:
+				std::cout << "Surrender !" << std::endl;
+				npc2.surrender();
+			break;
+			default:
+				std::cout << "Wrong choice !" << std::endl;
+				npc2.takeDamage(7);
+			break;
+		}
+		npc1.attack(npc2);
+		npc1.displayState();
+		npc2.displayState();
+		if(turn == 5){ npc1.changeAttack(&axe); }
+		if(turn == 7){ npc2.changeAttack(&sword); }
 		std::cout << "---------------------------" << std::endl;
 	}
 

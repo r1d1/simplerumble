@@ -13,6 +13,8 @@ class Agent
 		std::string m_Name;
 		int m_Life;
 		int m_MaxLife;
+		int m_Shield;
+		int m_defending;
 		//int m_AttackDamage;
 		Attack * m_AbilityOne;
 		Attack * m_AbilityTwo;
@@ -31,6 +33,8 @@ class Agent
 		void takeDamage(int value);
 		void attack(Agent & target);
 		void changeAttack(Attack * atk);
+		void defend();
+		void surrender();
 };
 
 #endif
