@@ -18,26 +18,67 @@ SIMPLE RUMBLE !
 #include "utils.h"
 
 #define SPEED 10000
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
-
-/*void ThreadFunction(void* UserData)
-{
-	// Thread printing :
-	for (int = 0; i < 10; ++i){ std::cout << "I'm the thread number 1" << std::endl; sf::Sleep(0.1f); }
-}*/
+#define WINDOW_WIDTH 300
+#define WINDOW_HEIGHT 100
 
 int main(int argc, char** argv)
 {
-	srand(time(NULL));
-	// Create a thread with our function
-	/*sf::Thread Thread(&ThreadFunction);
-	// Start it !
-	Thread.Launch();
+	int i=255;
+	int counter = 0;
+	int gameState = 0;
 	
-	// Main thread code :
-	for(int i = 0 ; i < 10 ; i++){ std::cout << "I'm the main thread" << std::endl; sf::Sleep(0.1f); }
-*/
+	srand(time(NULL));
+	// ================ Initialising ! ================
+	// Create main window
+	// Black screen
+	sf::RenderWindow App(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SIMPLE RUMBLE !!!");
+	
+	App.Clear(sf::Color(0,0,0));
+	App.Display();
+
+	// ##### TITLE Interface #####
+	// State 0
+	sf::String titleText;
+	titleText.SetText("SIMPLE RUMBLE !");
+	titleText.SetSize(32);
+	titleText.SetPosition(WINDOW_WIDTH * 3/10, WINDOW_HEIGHT *2/10);
+
+	sf::String stateText;
+	titleText.SetText("State 0");
+	titleText.SetSize(32);
+	titleText.SetPosition(10, 10);
+	// ##### MENU Interface #####
+
+	std::cout << "Done." << std::endl << "Init Menu ..." << std::endl;
+
+	sf::String choice0;
+
+	sf::String choice1;
+	sf::String choice2;
+	sf::String choice3;
+	sf::String choice4;
+
+	choice0.SetText("Start");
+	
+	choice1.SetText("Play");
+	choice2.SetText("Help");
+	choice3.SetText("Tadaaaaaa !");
+	choice4.SetText("Quit");
+
+	choice0.SetPosition(WINDOW_WIDTH *4.5/ 10, WINDOW_HEIGHT * 6 / 10);
+	choice0.SetColor(sf::Color::Red);
+	bool startColorState=true;
+	
+	choice1.SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT * 3 / 10);
+	choice2.SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT * 2 / 5);
+	choice3.SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	choice4.SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT * 3 / 5);
+	
+	// -------------------------------------------------------------
+	int menuChoice = -1;
+	int maxMenuChoices = 5;
+	// 0 : attack ; 1 : defend ; 2 : surrender ; 3 : do nothing ; 4 : quit game
+
 	Attack sword("Sword", 3, 450);
 	Attack axe("Axe", 10, 350);
 	Agent npc1("", 100, "Wooden sword", 3, 500);
@@ -45,7 +86,7 @@ int main(int argc, char** argv)
 	//Création de 2 objets de type Personnage : npc1 et npc2
 	int choice;
 
-	for(int turn=0 ; turn < 15 ; turn++)
+	/*for(int turn=0 ; turn < 15 ; turn++)
 	{
 		int choiceEnemy = rand() % 4;
 		std::cout << "What to do ?" << std::endl << "# 0 : Attack" << std::endl << "# 1 : Defend" << std::endl << "# 2 : Surrender" << std::endl;
@@ -94,17 +135,132 @@ int main(int argc, char** argv)
 		if(turn == 5){ npc1.changeAttack(&axe); }
 		if(turn == 7){ npc2.changeAttack(&sword); }
 		std::cout << "---------------------------" << std::endl;
-	}
+	}*/
+	// ----------------------------------------
+	// Start game loop
+	npc1.displayState();
+	npc2.displayState();
+	while (App.IsOpened())
+	{
+		// Process events
+		sf::Event Event;
+		float ElapsedTime = App.GetFrameTime();
+		bool validatedChoice = false;
 
+		while (App.GetEvent(Event))
+		{
+			// Event processing
+			if(Event.Type == sf::Event::Closed){ App.Close(); }
+			if(Event.Type == sf::Event::KeyPressed)
+			{
+				switch(gameState)
+				{
+					case 0 : // Titlescreen
+					if (App.GetInput().IsKeyDown(sf::Key::Return)){ std::cout << "NextState" << std::endl; gameState = 1; stateText.SetText("State 1"); }
+					stateText.SetText("State 0");
+					break;
+					case 1 : // Switching on options :
+
+						if (App.GetInput().IsKeyDown(sf::Key::Return)){ std::cout << "touche ENTER ! VALIDATION" << std::endl; validatedChoice = true; }
+						if (App.GetInput().IsKeyDown(sf::Key::Left)){ std::cout << "L" << std::endl; menuChoice = ( ((menuChoice-1)>0)? menuChoice-1 : 0); }
+						if (App.GetInput().IsKeyDown(sf::Key::Right)){ std::cout << "R" << std::endl;menuChoice = ( ((menuChoice+1) < maxMenuChoices-1)? menuChoice+1 : maxMenuChoices-1); }
+						if (App.GetInput().IsKeyDown(sf::Key::Up)){ std::cout << "U" << std::endl; menuChoice = ( ((menuChoice-1)>0)? menuChoice-1 : 0); }
+						if (App.GetInput().IsKeyDown(sf::Key::Down)){ std::cout << "D" << std::endl; menuChoice = ( ((menuChoice+1) < maxMenuChoices-1)? menuChoice+1 : maxMenuChoices-1); }
+						if (App.GetInput().IsKeyDown(sf::Key::A)){ npc2.changeAttack(&axe); npc1.changeAttack(&sword); std::cout << "You got the Axe !" << std::endl; }
+						if (App.GetInput().IsKeyDown(sf::Key::S)){ npc2.changeAttack(&sword); npc1.changeAttack(&axe); std::cout << "You got the Sword !" << std::endl; }
+						stateText.SetText("State 1");
+					break;
+					default :
+						std::cout << "Should not happen in the final game." << std::endl;
+					break;
+				}
+				std::cout << "Menu choice : " << menuChoice << std::endl;
+			}
+			if(validatedChoice)
+			{
+				int enemyChoice = rand() % maxMenuChoices;
+				switch(menuChoice)
+				{
+					case 0:
+						std::cout << "Attacking !" << std::endl;
+						npc2.attack(npc1);
+					break;
+					case 1:
+						std::cout << "Defending !" << std::endl;
+						npc2.defend();
+					break;
+					case 2:
+						std::cout << "Surrender !" << std::endl;
+						npc2.surrender();
+					break;
+					case 3:
+						std::cout << "You coward !" << std::endl;
+						npc2.takeDamage(rand() % 10);
+					break;
+					case 4:
+						App.Close();
+					break;
+					default:
+						std::cout << "Unknown choice" << std::endl;
+					break;
+				}
+				validatedChoice = false;
+				switch(enemyChoice)
+				{
+					case 0:
+						std::cout << "Attacking !" << std::endl;
+						npc1.attack(npc2);
+					break;
+					case 1:
+						std::cout << "Defending !" << std::endl;
+						npc1.defend();
+					break;
+					case 2:
+						std::cout << "Surrender !" << std::endl;
+						npc1.surrender();
+					break;
+					default:
+						std::cout << "Wrong choice !" << std::endl;
+						npc1.takeDamage(7);
+					break;
+				}
+				npc1.displayState();
+				npc2.displayState();
+			}
+		}
+		switch(gameState)
+		{
+			case 0:
+				// State : Title 
+				App.Clear(sf::Color::Blue);
+				App.Draw(titleText);
+				startColorState = !startColorState;
+				choice0.SetColor( ((startColorState) ? sf::Color::White : sf::Color::Red) );
+				App.Draw(choice0);
+				App.Display();
+			break;
+			case 1 :
+				App.Clear(sf::Color::Black);
+
+				App.Draw(choice1);
+				App.Draw(choice2);
+				App.Draw(choice3);
+				App.Draw(choice4);
+	//			App.Draw(stateText);
+				App.Display();
+			default:
+			break;
+		}
+	}
 
 	return EXIT_SUCCESS;
 }
 
 /*int main()
 {
-	int choixmenu = -1,i=255;
-	int compteur = 0;
-	int stateOfZeGame = 0;
+	int menuChoice = -1,i=255;
+	int counter = 0;
+	int gameState = 0;
 	
 	// ================ Initialisation ! ================
 	// State 0
@@ -318,7 +474,7 @@ int main(int argc, char** argv)
     App.Display();
 	
 	// ###### END OF LOADING
-	stateOfZeGame = 1;
+	gameState = 1;
 	stateText.SetText("State 1");
 
     // Start game loop
@@ -336,14 +492,14 @@ int main(int argc, char** argv)
 			// Event processing
 			if(Event.Type == sf::Event::KeyPressed)
 			{
-				switch(stateOfZeGame)
+				switch(gameState)
 				{
 					case 1 :
 						//if (App.GetInput().IsKeyDown(sf::Key::Left)){ std::cout << "touche Gauche" << std::endl; }
 						//if (App.GetInput().IsKeyDown(sf::Key::Right)){ std::cout << "touche Right" << std::endl; }
 						//if (App.GetInput().IsKeyDown(sf::Key::Up)){ std::cout << "touche Up" << std::endl; }
 						//if (App.GetInput().IsKeyDown(sf::Key::Down)){ std::cout << "touche Down" << std::endl; }
-						if (App.GetInput().IsKeyDown(sf::Key::Return)){ std::cout << "NextState" << std::endl; stateOfZeGame = 2; stateText.SetText("State 2"); }
+						if (App.GetInput().IsKeyDown(sf::Key::Return)){ std::cout << "NextState" << std::endl; gameState = 2; stateText.SetText("State 2"); }
 						//stateText.SetText("State 1");
 					break;
 					case 2 :
@@ -353,7 +509,7 @@ int main(int argc, char** argv)
 						if (App.GetInput().IsKeyDown(sf::Key::Right)){ std::cout << "touche Right" << std::endl; }
 						if (App.GetInput().IsKeyDown(sf::Key::Up)){ std::cout << "touche Up" << std::endl; }
 						if (App.GetInput().IsKeyDown(sf::Key::Down)){ std::cout << "touche Down" << std::endl; }
-						if (App.GetInput().IsKeyDown(sf::Key::A)){ std::cout << "NextState" << std::endl; stateOfZeGame = 3; stateText.SetText("State 3"); }
+						if (App.GetInput().IsKeyDown(sf::Key::A)){ std::cout << "NextState" << std::endl; gameState = 3; stateText.SetText("State 3"); }
 						//stateText.SetText("State 2");
 					break;
 					case 3 :
@@ -365,7 +521,7 @@ int main(int argc, char** argv)
 						if (App.GetInput().IsKeyDown(sf::Key::Right)){ std::cout << "touche Right" << std::endl; }
 						if (App.GetInput().IsKeyDown(sf::Key::Up)){ std::cout << "touche Up" << std::endl; }
 						if (App.GetInput().IsKeyDown(sf::Key::Down)){ std::cout << "touche Down" << std::endl; }
-						if (App.GetInput().IsKeyDown(sf::Key::A)){ std::cout << "NextState" << std::endl; stateOfZeGame = 1; stateText.SetText("State 1"); }
+						if (App.GetInput().IsKeyDown(sf::Key::A)){ std::cout << "NextState" << std::endl; gameState = 1; stateText.SetText("State 1"); }
 						//stateText.SetText("State 3");
 					break;
 					default :
@@ -389,32 +545,32 @@ int main(int argc, char** argv)
 //
 //		//		if (App.GetInput().IsKeyDown(sf::Key::Left))
 //		//		{
-//		//			if(compteur == 0)
+//		//			if(counter == 0)
 //		//			{
 //		//				std::cout << "touche Gauche" << std::endl;
 //		//				// sf::IntRect(18, 8, 18+48, 8+70)
 //		//				persoSprite.SetSubRect(sf::IntRect(49, 104, 67, 104+23));
 //		//				persoSprite.Move(-SPEED * ElapsedTime, 0);
 //
-//		//				compteur = 1;
+//		//				counter = 1;
 //		//			}
 //		//			else
 //		//			{
-//		//				if(compteur == 1)
+//		//				if(counter == 1)
 //		//				{
 //		//					std::cout << "touche Gauche" << std::endl;
 //		//					persoSprite.SetSubRect(sf::IntRect(26, 103, 44, 103+24));
 //		//					persoSprite.Move(-SPEED * ElapsedTime, 0);
-//		//					compteur = 2;						
+//		//					counter = 2;						
 //		//				}
 //		//				else
 //		//				{
-//		//					if(compteur == 2)
+//		//					if(counter == 2)
 //		//					{
 //		//						std::cout << "touche Gauche" << std::endl;
 //		//						persoSprite.SetSubRect(sf::IntRect(1, 104, 20, 104+23));
 //		//						persoSprite.Move(-SPEED * ElapsedTime, 0);
-//		//						compteur = 0;
+//		//						counter = 0;
 //		//					}
 //		//				}
 //		//			}
@@ -422,32 +578,32 @@ int main(int argc, char** argv)
 //		//		
 //		//		if (App.GetInput().IsKeyDown(sf::Key::Right))
 //		//		{
-//		//			if(compteur == 0)
+//		//			if(counter == 0)
 //		//			{
 //		//				std::cout << "touche Droite 1" << std::endl;
 //		//				// sf::IntRect(18, 8, 18+48, 8+70)
 //		//				persoSprite.SetSubRect(sf::IntRect(54, 39, 71, 64));
 //		//				persoSprite.Move(SPEED * ElapsedTime, 0);
 //
-//		//				compteur = 1;
+//		//				counter = 1;
 //		//			}
 //		//			else
 //		//			{
-//		//				if(compteur == 1)
+//		//				if(counter == 1)
 //		//				{
 //		//					std::cout << "touche Droite 2" << std::endl;
 //		//					persoSprite.SetSubRect(sf::IntRect(30, 39, 49, 64));
 //		//					persoSprite.Move(SPEED * ElapsedTime, 0);
-//		//					compteur = 2;						
+//		//					counter = 2;						
 //		//				}
 //		//				else
 //		//				{
-//		//					if(compteur == 2)
+//		//					if(counter == 2)
 //		//					{
 //		//						std::cout << "touche Droite 3" << std::endl;
 //		//						persoSprite.SetSubRect(sf::IntRect(5, 39, 23, 64));
 //		//						persoSprite.Move(SPEED * ElapsedTime, 0);
-//		//						compteur = 0;
+//		//						counter = 0;
 //		//					}
 //		//				}
 //		//			}
@@ -456,32 +612,32 @@ int main(int argc, char** argv)
 //
 //		//		if (App.GetInput().IsKeyDown(sf::Key::Up))
 //		//		{
-//		//			if(compteur == 0)
+//		//			if(counter == 0)
 //		//			{
 //		//				std::cout << "touche Droite" << std::endl;
 //		//				// sf::IntRect(18, 8, 18+48, 8+70)
 //		//				persoSprite.SetSubRect(sf::IntRect(49, 8, 67, 32));
 //		//				persoSprite.Move(0, -SPEED * ElapsedTime);
 //
-//		//				compteur = 1;
+//		//				counter = 1;
 //		//			}
 //		//			else
 //		//			{
-//		//				if(compteur == 1)
+//		//				if(counter == 1)
 //		//				{
 //		//					std::cout << "touche Droite" << std::endl;
 //		//					persoSprite.SetSubRect(sf::IntRect(26, 7, 44, 32));
 //		//					persoSprite.Move(0, -SPEED * ElapsedTime);
-//		//					compteur = 2;						
+//		//					counter = 2;						
 //		//				}
 //		//				else
 //		//				{
-//		//					if(compteur == 2)
+//		//					if(counter == 2)
 //		//					{
 //		//						std::cout << "touche Droite" << std::endl;
 //		//						persoSprite.SetSubRect(sf::IntRect(1, 8, 20, 32));
 //		//						persoSprite.Move(0, -SPEED * ElapsedTime);
-//		//						compteur = 0;
+//		//						counter = 0;
 //		//					}
 //		//				}
 //		//			}
@@ -490,32 +646,32 @@ int main(int argc, char** argv)
 //		//		
 //		//		if (App.GetInput().IsKeyDown(sf::Key::Down))
 //		//		{
-//		//			if(compteur == 0)
+//		//			if(counter == 0)
 //		//			{
 //		//				std::cout << "touche Droite" << std::endl;
 //		//				// sf::IntRect(18, 8, 18+48, 8+70)
 //		//				persoSprite.SetSubRect(sf::IntRect(49, 72, 67, 96));
 //		//				persoSprite.Move(0, SPEED * ElapsedTime);
 //
-//		//				compteur = 1;
+//		//				counter = 1;
 //		//			}
 //		//			else
 //		//			{
-//		//				if(compteur == 1)
+//		//				if(counter == 1)
 //		//				{
 //		//					std::cout << "touche Droite" << std::endl;
 //		//					persoSprite.SetSubRect(sf::IntRect(26, 71, 44, 96));
 //		//					persoSprite.Move(0, SPEED * ElapsedTime);
-//		//					compteur = 2;						
+//		//					counter = 2;						
 //		//				}
 //		//				else
 //		//				{
-//		//					if(compteur == 2)
+//		//					if(counter == 2)
 //		//					{
 //		//						std::cout << "touche Droite" << std::endl;
 //		//						persoSprite.SetSubRect(sf::IntRect(1, 72, 20, 96));
 //		//						persoSprite.Move(0, SPEED * ElapsedTime);
-//		//						compteur = 0;
+//		//						counter = 0;
 //		//					}
 //		//				}
 //		//			}
@@ -566,7 +722,7 @@ int main(int argc, char** argv)
 //
 ////		App.Clear(sf::Color::Black);
 //	
-//		switch(stateOfZeGame)
+//		switch(gameState)
 //		{
 //			case 1 :
 //				// State : Title 
