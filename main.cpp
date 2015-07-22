@@ -18,8 +18,8 @@ SIMPLE RUMBLE !
 #include "utils.h"
 
 #define SPEED 10000
-#define WINDOW_WIDTH 300
-#define WINDOW_HEIGHT 100
+#define WINDOW_WIDTH 600
+#define WINDOW_HEIGHT 200
 
 int main(int argc, char** argv)
 {
@@ -51,28 +51,47 @@ int main(int argc, char** argv)
 
 	std::cout << "Done." << std::endl << "Init Menu ..." << std::endl;
 
+	sf::Shape cursor = sf::Shape::Circle(float(WINDOW_WIDTH * 4 / 5), float(WINDOW_HEIGHT * 6 / 10), 10.0, sf::Color(255,0,0,255), 0.0f, sf::Color(255,255,0));
+
+	//cursor.SetPosition(10, 10);
+	
 	sf::String choice0;
+
+	//choice0.SetPosition(WINDOW_WIDTH *4.5/ 10, WINDOW_HEIGHT * 6 / 10);
+	choice0.SetPosition(WINDOW_WIDTH *4.5/ 10, WINDOW_HEIGHT * 6 / 10);
+	choice0.SetColor(sf::Color::Red);
+	bool startColorState=true;
 
 	sf::String choice1;
 	sf::String choice2;
 	sf::String choice3;
 	sf::String choice4;
+	sf::String choice5;
 
 	choice0.SetText("Start");
-	
-	choice1.SetText("Play");
-	choice2.SetText("Help");
-	choice3.SetText("Tadaaaaaa !");
-	choice4.SetText("Quit");
+	choice0.SetSize(32);
 
-	choice0.SetPosition(WINDOW_WIDTH *4.5/ 10, WINDOW_HEIGHT * 6 / 10);
-	choice0.SetColor(sf::Color::Red);
-	bool startColorState=true;
+	choice1.SetText("Attack");
+	choice1.SetSize(16);
 	
-	choice1.SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT * 3 / 10);
-	choice2.SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT * 2 / 5);
-	choice3.SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-	choice4.SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT * 3 / 5);
+	choice2.SetText("Defend");
+	choice2.SetSize(16);
+	
+	choice3.SetText("Surrender");
+	choice3.SetSize(16);
+	
+	choice4.SetText("Do nothing");
+	choice4.SetSize(16);
+	
+	choice5.SetText("Quit");
+	choice5.SetSize(16);
+
+	
+	choice1.SetPosition(10, WINDOW_HEIGHT * 4 / 5);
+	choice2.SetPosition(WINDOW_WIDTH * 1 / 5, WINDOW_HEIGHT * 4 / 5);
+	choice3.SetPosition(WINDOW_WIDTH * 2 / 5, WINDOW_HEIGHT * 4 / 5);
+	choice4.SetPosition(WINDOW_WIDTH * 3 / 5, WINDOW_HEIGHT * 4 / 5);
+	choice5.SetPosition(WINDOW_WIDTH * 4 / 5, WINDOW_HEIGHT * 4 / 5);
 	
 	// -------------------------------------------------------------
 	int menuChoice = -1;
@@ -237,6 +256,7 @@ int main(int argc, char** argv)
 				startColorState = !startColorState;
 				choice0.SetColor( ((startColorState) ? sf::Color::White : sf::Color::Red) );
 				App.Draw(choice0);
+				App.Draw(cursor);
 				App.Display();
 			break;
 			case 1 :
@@ -246,6 +266,7 @@ int main(int argc, char** argv)
 				App.Draw(choice2);
 				App.Draw(choice3);
 				App.Draw(choice4);
+				App.Draw(choice5);
 	//			App.Draw(stateText);
 				App.Display();
 			default:
