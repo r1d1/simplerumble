@@ -25,7 +25,9 @@ int main(int argc, char** argv)
 {
 	int i=255;
 	int counter = 0;
-	int gameState = 0;
+	//int gameState = 0;
+	//For DEBUG :
+	int gameState = 1;
 	
 	srand(time(NULL));
 	// ================ Initialising ! ================
@@ -51,9 +53,13 @@ int main(int argc, char** argv)
 
 	std::cout << "Done." << std::endl << "Init Menu ..." << std::endl;
 
-	sf::Shape cursor = sf::Shape::Circle(float(WINDOW_WIDTH * 4 / 5), float(WINDOW_HEIGHT * 6 / 10), 10.0, sf::Color(255,0,0,255), 0.0f, sf::Color(255,255,0));
+	sf::Image cursorImage(15, 15, sf::Color(0, 255, 0));
+	sf::Sprite cursor;
+	cursor.SetImage(cursorImage);
+	//sf::Shape cursor = sf::Shape::Circle(10, 160, 10.0, sf::Color(255,0,0,255), 0.0f, sf::Color(255,255,0));
+	//sf::Shape cursor = sf::Shape::Circle(float(WINDOW_WIDTH * 4 / 5), float(WINDOW_HEIGHT * 6 / 10), 10.0, sf::Color(255,0,0,255), 0.0f, sf::Color(255,255,0));
 
-	//cursor.SetPosition(10, 10);
+	cursor.SetPosition(10, 10);
 	
 	sf::String choice0;
 
@@ -87,14 +93,14 @@ int main(int argc, char** argv)
 	choice5.SetSize(16);
 
 	
-	choice1.SetPosition(10, WINDOW_HEIGHT * 4 / 5);
-	choice2.SetPosition(WINDOW_WIDTH * 1 / 5, WINDOW_HEIGHT * 4 / 5);
-	choice3.SetPosition(WINDOW_WIDTH * 2 / 5, WINDOW_HEIGHT * 4 / 5);
-	choice4.SetPosition(WINDOW_WIDTH * 3 / 5, WINDOW_HEIGHT * 4 / 5);
-	choice5.SetPosition(WINDOW_WIDTH * 4 / 5, WINDOW_HEIGHT * 4 / 5);
+	choice1.SetPosition(25.0f, WINDOW_HEIGHT * 4 / 5);
+	choice2.SetPosition(25.0f + WINDOW_WIDTH * 1 / 5, WINDOW_HEIGHT * 4 / 5);
+	choice3.SetPosition(25.0f + WINDOW_WIDTH * 2 / 5, WINDOW_HEIGHT * 4 / 5);
+	choice4.SetPosition(25.0f + WINDOW_WIDTH * 3 / 5, WINDOW_HEIGHT * 4 / 5);
+	choice5.SetPosition(25.0f + WINDOW_WIDTH * 4 / 5, WINDOW_HEIGHT * 4 / 5);
 	
 	// -------------------------------------------------------------
-	int menuChoice = -1;
+	int menuChoice = 0;
 	int maxMenuChoices = 5;
 	// 0 : attack ; 1 : defend ; 2 : surrender ; 3 : do nothing ; 4 : quit game
 
@@ -180,11 +186,11 @@ int main(int argc, char** argv)
 					break;
 					case 1 : // Switching on options :
 
-						if (App.GetInput().IsKeyDown(sf::Key::Return)){ std::cout << "touche ENTER ! VALIDATION" << std::endl; validatedChoice = true; }
-						if (App.GetInput().IsKeyDown(sf::Key::Left)){ std::cout << "L" << std::endl; menuChoice = ( ((menuChoice-1)>0)? menuChoice-1 : 0); }
-						if (App.GetInput().IsKeyDown(sf::Key::Right)){ std::cout << "R" << std::endl;menuChoice = ( ((menuChoice+1) < maxMenuChoices-1)? menuChoice+1 : maxMenuChoices-1); }
-						if (App.GetInput().IsKeyDown(sf::Key::Up)){ std::cout << "U" << std::endl; menuChoice = ( ((menuChoice-1)>0)? menuChoice-1 : 0); }
-						if (App.GetInput().IsKeyDown(sf::Key::Down)){ std::cout << "D" << std::endl; menuChoice = ( ((menuChoice+1) < maxMenuChoices-1)? menuChoice+1 : maxMenuChoices-1); }
+						if (App.GetInput().IsKeyDown(sf::Key::Return)){ validatedChoice = true; }
+						if (App.GetInput().IsKeyDown(sf::Key::Left)){ menuChoice = ( ((menuChoice-1)>0)? menuChoice-1 : 0); }
+						if (App.GetInput().IsKeyDown(sf::Key::Right)){ menuChoice = ( ((menuChoice+1) < maxMenuChoices-1)? menuChoice+1 : maxMenuChoices-1); }
+						if (App.GetInput().IsKeyDown(sf::Key::Up)){ menuChoice = ( ((menuChoice-1)>0)? menuChoice-1 : 0); }
+						if (App.GetInput().IsKeyDown(sf::Key::Down)){ menuChoice = ( ((menuChoice+1) < maxMenuChoices-1)? menuChoice+1 : maxMenuChoices-1); }
 						if (App.GetInput().IsKeyDown(sf::Key::A)){ npc2.changeAttack(&axe); npc1.changeAttack(&sword); std::cout << "You got the Axe !" << std::endl; }
 						if (App.GetInput().IsKeyDown(sf::Key::S)){ npc2.changeAttack(&sword); npc1.changeAttack(&axe); std::cout << "You got the Sword !" << std::endl; }
 						stateText.SetText("State 1");
@@ -193,7 +199,7 @@ int main(int argc, char** argv)
 						std::cout << "Should not happen in the final game." << std::endl;
 					break;
 				}
-				std::cout << "Menu choice : " << menuChoice << std::endl;
+			//	std::cout << "Menu choice : " << menuChoice << std::endl;
 			}
 			if(validatedChoice)
 			{
@@ -247,6 +253,7 @@ int main(int argc, char** argv)
 				npc2.displayState();
 			}
 		}
+		float cursorPos = (WINDOW_WIDTH * (menuChoice)) / maxMenuChoices + 5.0f;
 		switch(gameState)
 		{
 			case 0:
@@ -261,12 +268,15 @@ int main(int argc, char** argv)
 			break;
 			case 1 :
 				App.Clear(sf::Color::Black);
-
+				//cursor.SetPosition((cursorPos, cursor.GetPosition().y));
+				//cursor.SetCenter(50.0f, 50.0f);
+				cursor.SetPosition(cursorPos, WINDOW_HEIGHT - 45.0f);
 				App.Draw(choice1);
 				App.Draw(choice2);
 				App.Draw(choice3);
 				App.Draw(choice4);
 				App.Draw(choice5);
+				App.Draw(cursor);
 	//			App.Draw(stateText);
 				App.Display();
 			default:
