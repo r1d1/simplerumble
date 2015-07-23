@@ -17,7 +17,7 @@ SIMPLE RUMBLE !
 #include "Attack.h"
 #include "utils.h"
 
-#define SPEED 10000
+#define SPEED 1000
 #define WINDOW_WIDTH 600
 #define WINDOW_HEIGHT 200
 
@@ -25,9 +25,7 @@ int main(int argc, char** argv)
 {
 	int i=255;
 	int counter = 0;
-	//int gameState = 0;
-	//For DEBUG :
-	int gameState = 1;
+	int gameState = 0;
 	
 	srand(time(NULL));
 	// ================ Initialising ! ================
@@ -35,6 +33,21 @@ int main(int argc, char** argv)
 	// Black screen
 	sf::RenderWindow App(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SIMPLE RUMBLE !!!");
 	
+	sf::Image npc1Image;
+	sf::Sprite npc1Sprite;
+	sf::Image npc2Image;
+	sf::Sprite npc2Sprite;
+	if (!npc1Image.LoadFromFile("images/npc1.png")){ std::cout << "Error when loading npc1 image" << std::endl; return EXIT_FAILURE; }
+	else{ npc1Sprite.SetImage(npc1Image); }
+	if (!npc2Image.LoadFromFile("images/npc2.png")){ std::cout << "Error when loading npc2 image" << std::endl; return EXIT_FAILURE; }
+	else{ npc2Sprite.SetImage(npc2Image); }
+
+	npc1Sprite.SetPosition(WINDOW_WIDTH * 0.8 / 3, WINDOW_HEIGHT / 3);
+	npc2Sprite.SetPosition(WINDOW_WIDTH * 1.8 / 3, WINDOW_HEIGHT / 3);
+	npc1Sprite.SetScale(3.0f, 3.0f);
+	npc2Sprite.SetScale(3.0f, 3.0f);
+
+
 	App.Clear(sf::Color(0,0,0));
 	App.Display();
 
@@ -271,6 +284,8 @@ int main(int argc, char** argv)
 				//cursor.SetPosition((cursorPos, cursor.GetPosition().y));
 				//cursor.SetCenter(50.0f, 50.0f);
 				cursor.SetPosition(cursorPos, WINDOW_HEIGHT - 45.0f);
+				App.Draw(npc1Sprite);
+				App.Draw(npc2Sprite);
 				App.Draw(choice1);
 				App.Draw(choice2);
 				App.Draw(choice3);
@@ -303,10 +318,11 @@ int main(int argc, char** argv)
 
 	// ##### Scene #####
 //	Minipers heros;
-	sf::Image perso;
+	//sf::Image perso;
 	sf::Image imageBackground;
 	sf::Image imageHouse;
 
+	sf::Image perso;
 	sf::Sprite persoSprite;
 	sf::Sprite backgroundSprite;
 	sf::Sprite houseSprite;
