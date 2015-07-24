@@ -37,16 +37,19 @@ int main(int argc, char** argv)
 	sf::Sprite npc1Sprite;
 	sf::Image npc2Image;
 	sf::Sprite npc2Sprite;
-	if (!npc1Image.LoadFromFile("images/npc1.png")){ std::cout << "Error when loading npc1 image" << std::endl; return EXIT_FAILURE; }
+	if (!npc1Image.LoadFromFile("images/npc1-full.png")){ std::cout << "Error when loading npc1 image" << std::endl; return EXIT_FAILURE; }
 	else{ npc1Sprite.SetImage(npc1Image); }
-	if (!npc2Image.LoadFromFile("images/npc2.png")){ std::cout << "Error when loading npc2 image" << std::endl; return EXIT_FAILURE; }
+	if (!npc2Image.LoadFromFile("images/npc2-full.png")){ std::cout << "Error when loading npc2 image" << std::endl; return EXIT_FAILURE; }
 	else{ npc2Sprite.SetImage(npc2Image); }
 
-	npc1Sprite.SetPosition(WINDOW_WIDTH * 0.8 / 3, WINDOW_HEIGHT / 3);
-	npc2Sprite.SetPosition(WINDOW_WIDTH * 1.8 / 3, WINDOW_HEIGHT / 3);
-	npc1Sprite.SetScale(3.0f, 3.0f);
-	npc2Sprite.SetScale(3.0f, 3.0f);
+	npc1Sprite.SetSubRect(sf::IntRect(32, 96, 64, 144));
+	npc2Sprite.SetSubRect(sf::IntRect(32, 48, 64, 96));
+	bool posOne = true;
 
+	npc1Sprite.SetPosition(WINDOW_WIDTH * 0.8 / 3, WINDOW_HEIGHT / 4);
+	npc2Sprite.SetPosition(WINDOW_WIDTH * 1.8 / 3, WINDOW_HEIGHT / 4);
+	npc1Sprite.SetScale(2.0f, 2.0f);
+	npc2Sprite.SetScale(2.0f, 2.0f);
 
 	App.Clear(sf::Color(0,0,0));
 	App.Display();
@@ -178,11 +181,12 @@ int main(int argc, char** argv)
 	// Start game loop
 	npc1.displayState();
 	npc2.displayState();
+	float cumulativeTime = 0.0;
 	while (App.IsOpened())
 	{
 		// Process events
 		sf::Event Event;
-		float ElapsedTime = App.GetFrameTime();
+		float elapsedTime = App.GetFrameTime();
 		bool validatedChoice = false;
 
 		while (App.GetEvent(Event))
@@ -267,6 +271,7 @@ int main(int argc, char** argv)
 			}
 		}
 		float cursorPos = (WINDOW_WIDTH * (menuChoice)) / maxMenuChoices + 5.0f;
+		//if(cumulativeTime > 2.0){ posOne = !posOne; }
 		switch(gameState)
 		{
 			case 0:
@@ -281,8 +286,25 @@ int main(int argc, char** argv)
 			break;
 			case 1 :
 				App.Clear(sf::Color::Black);
-				//cursor.SetPosition((cursorPos, cursor.GetPosition().y));
-				//cursor.SetCenter(50.0f, 50.0f);
+				cumulativeTime += elapsedTime;
+				if(cumulativeTime > 0.5)
+				{
+					if( posOne )
+					{
+						// Animation of Sprites
+						npc1Sprite.SetSubRect(sf::IntRect(0, 96, 32, 144));
+						npc2Sprite.SetSubRect(sf::IntRect(64, 48, 96, 96));
+//						std::cout << cumulativeTime << std::endl;
+					}
+					else
+					{
+						npc1Sprite.SetSubRect(sf::IntRect(32, 96, 64, 144));
+						npc2Sprite.SetSubRect(sf::IntRect(32, 48, 64, 96));
+//						std::cout << cumulativeTime << std::endl;
+					}
+					cumulativeTime = 0.0;
+					posOne = !posOne;
+				}
 				cursor.SetPosition(cursorPos, WINDOW_HEIGHT - 45.0f);
 				App.Draw(npc1Sprite);
 				App.Draw(npc2Sprite);
@@ -294,6 +316,10 @@ int main(int argc, char** argv)
 				App.Draw(cursor);
 	//			App.Draw(stateText);
 				App.Display();
+//				std::cout << cumulativeTime << std::endl;
+			case 2 :
+			//	sleep(1);
+			//	gameState = 1;
 			default:
 			break;
 		}
