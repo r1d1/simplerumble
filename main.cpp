@@ -127,56 +127,6 @@ int main(int argc, char** argv)
 	//Création de 2 objets de type Personnage : npc1 et npc2
 	int choice;
 
-	/*for(int turn=0 ; turn < 15 ; turn++)
-	{
-		int choiceEnemy = rand() % 4;
-		std::cout << "What to do ?" << std::endl << "# 0 : Attack" << std::endl << "# 1 : Defend" << std::endl << "# 2 : Surrender" << std::endl;
-		std::cin >> choice;
-		std::cout << "Turn " << turn << " you choose " << choice << " you enemy choose " << choiceEnemy << std::endl;
-		switch(choice)
-		{
-			case 0:
-				std::cout << "Attacking !" << std::endl;
-				npc2.attack(npc1);
-			break;
-			case 1:
-				std::cout << "Defending !" << std::endl;
-				npc2.defend();
-			break;
-			case 2:
-				std::cout << "Surrender !" << std::endl;
-				npc2.surrender();
-			break;
-			default:
-				std::cout << "Wrong choice !" << std::endl;
-				npc2.takeDamage(7);
-			break;
-		}
-		switch(choiceEnemy)
-		{
-			case 0:
-				std::cout << "Attacking !" << std::endl;
-				npc1.attack(npc2);
-			break;
-			case 1:
-				std::cout << "Defending !" << std::endl;
-				npc1.defend();
-			break;
-			case 2:
-				std::cout << "Surrender !" << std::endl;
-				npc1.surrender();
-			break;
-			default:
-				std::cout << "Wrong choice !" << std::endl;
-				npc1.takeDamage(7);
-			break;
-		}
-		npc1.displayState();
-		npc2.displayState();
-		if(turn == 5){ npc1.changeAttack(&axe); }
-		if(turn == 7){ npc2.changeAttack(&sword); }
-		std::cout << "---------------------------" << std::endl;
-	}*/
 	// ----------------------------------------
 	// Start game loop
 	npc1.displayState();
@@ -188,6 +138,7 @@ int main(int argc, char** argv)
 		sf::Event Event;
 		float elapsedTime = App.GetFrameTime();
 		bool validatedChoice = false;
+		int enemyChoice;
 
 		while (App.GetEvent(Event))
 		{
@@ -220,7 +171,7 @@ int main(int argc, char** argv)
 			}
 			if(validatedChoice)
 			{
-				int enemyChoice = rand() % maxMenuChoices;
+				enemyChoice = rand() % maxMenuChoices;
 				switch(menuChoice)
 				{
 					case 0:
@@ -276,10 +227,10 @@ int main(int argc, char** argv)
 		{
 			case 0:
 				// State : Title 
-				App.Clear(sf::Color::Blue);
+				App.Clear(sf::Color::Red);
 				App.Draw(titleText);
 				startColorState = !startColorState;
-				choice0.SetColor( ((startColorState) ? sf::Color::White : sf::Color::Red) );
+				choice0.SetColor( ((startColorState) ? sf::Color::White : sf::Color::Yellow) );
 				App.Draw(choice0);
 				App.Draw(cursor);
 				App.Display();
@@ -305,6 +256,9 @@ int main(int argc, char** argv)
 					cumulativeTime = 0.0;
 					posOne = !posOne;
 				}
+				//if(menuChoice == 1){ npc2.getAttack()->animation(App); }
+				//if(enemyChoice == 1){ npc1.getAttack()->animation(App); }
+
 				cursor.SetPosition(cursorPos, WINDOW_HEIGHT - 45.0f);
 				App.Draw(npc1Sprite);
 				App.Draw(npc2Sprite);
