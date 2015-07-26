@@ -33,23 +33,23 @@ int main(int argc, char** argv)
 	// Black screen
 	sf::RenderWindow App(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SIMPLE RUMBLE !!!");
 	
-	sf::Image npc1Image;
-	sf::Sprite npc1Sprite;
-	sf::Image npc2Image;
-	sf::Sprite npc2Sprite;
-	if (!npc1Image.LoadFromFile("images/npc1-full.png")){ std::cout << "Error when loading npc1 image" << std::endl; return EXIT_FAILURE; }
-	else{ npc1Sprite.SetImage(npc1Image); }
-	if (!npc2Image.LoadFromFile("images/npc2-full.png")){ std::cout << "Error when loading npc2 image" << std::endl; return EXIT_FAILURE; }
-	else{ npc2Sprite.SetImage(npc2Image); }
+	sf::Image opponentImage;
+	sf::Sprite opponentSprite;
+	sf::Image playerImage;
+	sf::Sprite playerSprite;
+	if (!opponentImage.LoadFromFile("images/npc1-full.png")){ std::cout << "Error when loading opponent image" << std::endl; return EXIT_FAILURE; }
+	else{ opponentSprite.SetImage(opponentImage); }
+	if (!playerImage.LoadFromFile("images/npc2-full.png")){ std::cout << "Error when loading player image" << std::endl; return EXIT_FAILURE; }
+	else{ playerSprite.SetImage(playerImage); }
 
-	npc1Sprite.SetSubRect(sf::IntRect(32, 96, 64, 144));
-	npc2Sprite.SetSubRect(sf::IntRect(32, 48, 64, 96));
+	opponentSprite.SetSubRect(sf::IntRect(32, 96, 64, 144));
+	playerSprite.SetSubRect(sf::IntRect(32, 48, 64, 96));
 	bool posOne = true;
 
-	npc1Sprite.SetPosition(WINDOW_WIDTH * 0.8 / 3, WINDOW_HEIGHT / 4);
-	npc2Sprite.SetPosition(WINDOW_WIDTH * 1.8 / 3, WINDOW_HEIGHT / 4);
-	npc1Sprite.SetScale(2.0f, 2.0f);
-	npc2Sprite.SetScale(2.0f, 2.0f);
+	opponentSprite.SetPosition(WINDOW_WIDTH * 0.8 / 3, WINDOW_HEIGHT / 4);
+	playerSprite.SetPosition(WINDOW_WIDTH * 1.8 / 3, WINDOW_HEIGHT / 4);
+	opponentSprite.SetScale(2.0f, 2.0f);
+	playerSprite.SetScale(2.0f, 2.0f);
 
 	sf::Image axeImage;
 	sf::Sprite axeSprite;
@@ -134,15 +134,21 @@ int main(int argc, char** argv)
 
 	Attack sword("Sword", 3, 450);
 	Attack axe("Axe", 10, 350);
-	Agent npc1("", 100, "Wooden sword", 3, 500);
-	Agent npc2("", 90, "Axe", 4, 500);
-	//Création de 2 objets de type Personnage : npc1 et npc2
+	//Agent opponent("", 100, "Wooden sword", 3, 500);
+	//Agent player("", 90, "Axe", 4, 500);
+	Agent * opponent;
+	Agent * player;
+
+	player = new Agent("", 100, "Wooden sword", 3, 500);
+	opponent = new Agent("", 90, "Axe", 4, 500);
+
+	std::vector<Agent> characters;
 	int choice;
 
 	// ----------------------------------------
 	// Start game loop
-	npc1.displayState();
-	npc2.displayState();
+	opponent->displayState();
+	player->displayState();
 	float cumulativeTime = 0.0;
 	float cursorPosX=0.0, cursorPosY=0.0;
 	cursorSprite.SetPosition(cursorPosX, cursorPosY);
@@ -163,8 +169,18 @@ int main(int argc, char** argv)
 				switch(gameState)
 				{
 					case 0 : // Titlescreen
-						if (App.GetInput().IsKeyDown(sf::Key::Return)){ std::cout << "NextState" << std::endl; gameState = 1; }
-						//stateText.SetText("State 0");
+						if (App.GetInput().IsKeyDown(sf::Key::Return)){ gameState = 1; }
+					
+					//	if (App.GetInput().IsKeyDown(sf::Key::F1)){ std::cout << "F1" << std::endl; }
+					//	if (App.GetInput().IsKeyDown(sf::Key::F2)){ std::cout << "F2" << std::endl; }
+					//	if (App.GetInput().IsKeyDown(sf::Key::F3)){ std::cout << "F3" << std::endl; }
+					//	if (App.GetInput().IsKeyDown(sf::Key::F4)){ std::cout << "F4" << std::endl; }
+					//	
+					//	if (App.GetInput().IsKeyDown(sf::Key::Back)){ std::cout << "Back" << std::endl; }
+					//	
+					//	if (App.GetInput().IsKeyDown(sf::Key::Numpad0)){ std::cout << "Np0" << std::endl; }
+					//	if (App.GetInput().IsKeyDown(sf::Key::Numpad1)){ std::cout << "Np1" << std::endl; }
+
 					break;
 					case 1 : // Character Selection
 						if (App.GetInput().IsKeyDown(sf::Key::Left)){ characterChoice = ( ((characterChoice-1)>0)? characterChoice-1 : 0); }
@@ -178,8 +194,8 @@ int main(int argc, char** argv)
 						if (App.GetInput().IsKeyDown(sf::Key::Right)){ menuChoice = ( ((menuChoice+1) < maxMenuChoices-1)? menuChoice+1 : maxMenuChoices-1); }
 						if (App.GetInput().IsKeyDown(sf::Key::Up)){ menuChoice = ( ((menuChoice-1)>0)? menuChoice-1 : 0); }
 						if (App.GetInput().IsKeyDown(sf::Key::Down)){ menuChoice = ( ((menuChoice+1) < maxMenuChoices-1)? menuChoice+1 : maxMenuChoices-1); }
-						if (App.GetInput().IsKeyDown(sf::Key::A)){ npc2.changeAttack(&axe); npc1.changeAttack(&sword); std::cout << "You got the Axe !" << std::endl; }
-						if (App.GetInput().IsKeyDown(sf::Key::S)){ npc2.changeAttack(&sword); npc1.changeAttack(&axe); std::cout << "You got the Sword !" << std::endl; }
+						if (App.GetInput().IsKeyDown(sf::Key::A)){ player->changeAttack(&axe); opponent->changeAttack(&sword); std::cout << "You got the Axe !" << std::endl; }
+						if (App.GetInput().IsKeyDown(sf::Key::S)){ player->changeAttack(&sword); opponent->changeAttack(&axe); std::cout << "You got the Sword !" << std::endl; }
 					break;
 					default :
 						std::cout << "Should not happen in the final game." << std::endl;
@@ -211,19 +227,19 @@ int main(int argc, char** argv)
 				{
 					case 0:
 						std::cout << "Attacking !" << std::endl;
-						npc2.attack(npc1);
+						player->attack(*opponent);
 					break;
 					case 1:
 						std::cout << "Defending !" << std::endl;
-						npc2.defend();
+						player->defend();
 					break;
 					case 2:
 						std::cout << "Surrender !" << std::endl;
-						npc2.surrender();
+						player->surrender();
 					break;
 					case 3:
 						std::cout << "You coward !" << std::endl;
-						npc2.takeDamage(rand() % 10);
+						player->takeDamage(rand() % 10);
 					break;
 					case 4:
 						App.Close();
@@ -237,23 +253,23 @@ int main(int argc, char** argv)
 				{
 					case 0:
 						std::cout << "Attacking !" << std::endl;
-						npc1.attack(npc2);
+						opponent->attack(*player);
 					break;
 					case 1:
 						std::cout << "Defending !" << std::endl;
-						npc1.defend();
+						opponent->defend();
 					break;
 					case 2:
 						std::cout << "Surrender !" << std::endl;
-						npc1.surrender();
+						opponent->surrender();
 					break;
 					default:
 						std::cout << "Wrong choice !" << std::endl;
-						npc1.takeDamage(7);
+						opponent->takeDamage(7);
 					break;
 				}
-				npc1.displayState();
-				npc2.displayState();
+				opponent->displayState();
+				player->displayState();
 			}
 		}
 		//if(cumulativeTime > 2.0){ posOne = !posOne; }
@@ -269,10 +285,10 @@ int main(int argc, char** argv)
 				App.Draw(choice0);
 			break;
 			case 1 :
-				npc1Sprite.SetSubRect(sf::IntRect(0, 0, 32, 48));
-				npc2Sprite.SetSubRect(sf::IntRect(0, 0, 32, 48));
-				App.Draw(npc1Sprite);
-				App.Draw(npc2Sprite);
+				opponentSprite.SetSubRect(sf::IntRect(0, 0, 32, 48));
+				playerSprite.SetSubRect(sf::IntRect(0, 0, 32, 48));
+				App.Draw(opponentSprite);
+				App.Draw(playerSprite);
 			break;
 			case 2 :
 				cumulativeTime += elapsedTime;
@@ -281,22 +297,22 @@ int main(int argc, char** argv)
 					if( posOne )
 					{
 						// Animation of Sprites
-						npc1Sprite.SetSubRect(sf::IntRect(0, 96, 32, 144));
-						npc2Sprite.SetSubRect(sf::IntRect(64, 48, 96, 96));
+						opponentSprite.SetSubRect(sf::IntRect(0, 96, 32, 144));
+						playerSprite.SetSubRect(sf::IntRect(64, 48, 96, 96));
 //						std::cout << cumulativeTime << std::endl;
 					}
 					else
 					{
-						npc1Sprite.SetSubRect(sf::IntRect(32, 96, 64, 144));
-						npc2Sprite.SetSubRect(sf::IntRect(32, 48, 64, 96));
+						opponentSprite.SetSubRect(sf::IntRect(32, 96, 64, 144));
+						playerSprite.SetSubRect(sf::IntRect(32, 48, 64, 96));
 //						std::cout << cumulativeTime << std::endl;
 					}
 					cumulativeTime = 0.0;
 					posOne = !posOne;
 				}
 
-				App.Draw(npc1Sprite);
-				App.Draw(npc2Sprite);
+				App.Draw(opponentSprite);
+				App.Draw(playerSprite);
 				App.Draw(choice1);
 				App.Draw(choice2);
 				App.Draw(choice3);
@@ -309,6 +325,9 @@ int main(int argc, char** argv)
 		App.Draw(cursorSprite);
 		App.Display();
 	}
+
+	delete player;
+	delete opponent;
 
 	return EXIT_SUCCESS;
 }
