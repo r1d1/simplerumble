@@ -22,7 +22,7 @@ class Agent
 
 	public:
 		Agent();
-		Agent(std::string, int, std::string, int, int);
+		Agent(std::string, int);
 		~Agent();
 		int getLife() const;
 		int getMaxLife() const;

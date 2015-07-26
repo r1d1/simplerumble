@@ -19,7 +19,8 @@ SIMPLE RUMBLE !
 
 #define SPEED 1000
 #define WINDOW_WIDTH 600
-#define WINDOW_HEIGHT 200
+#define WINDOW_HEIGHT 400
+//#define WINDOW_HEIGHT 200
 
 int main(int argc, char** argv)
 {
@@ -132,15 +133,34 @@ int main(int argc, char** argv)
 	int characterChoice = 0;
 	int maxCharacterChoices = 2;
 
+	// -------------------------------------------------------------
 	Attack sword("Sword", 3, 450);
 	Attack axe("Axe", 10, 350);
-	//Agent opponent("", 100, "Wooden sword", 3, 500);
-	//Agent player("", 90, "Axe", 4, 500);
+	// Attack type :
+	// Moon
+	// Feather
+	// Light
+	std::vector<std::string> attackTypes;
+	attackTypes.push_back("Moon");
+	attackTypes.push_back("Feather");
+	attackTypes.push_back("Light");
+
+	std::vector<Attack> attackList;
+	Attack attackOne("Blade", attackTypes.at(0), 1);
+	Attack attackTwo("Blade", attackTypes.at(1), 1);
+	Attack attackThree("Blade", attackTypes.at(2), 1);
+	attackList.push_back(attackOne);
+	attackList.push_back(attackTwo);
+	attackList.push_back(attackThree);
+
+	//Attack axe("Axe", 10, 350);
 	Agent * opponent;
 	Agent * player;
 
-	player = new Agent("", 100, "Wooden sword", 3, 500);
-	opponent = new Agent("", 90, "Axe", 4, 500);
+	//player = new Agent("", 100, "Wooden sword", 3, 500);
+	//opponent = new Agent("", 90, "Axe", 4, 500);
+	player = new Agent("", 70 + rand() % 30);
+	opponent = new Agent("", 70 + rand() % 30);
 
 	std::vector<Agent> characters;
 	int choice;
@@ -194,8 +214,8 @@ int main(int argc, char** argv)
 						if (App.GetInput().IsKeyDown(sf::Key::Right)){ menuChoice = ( ((menuChoice+1) < maxMenuChoices-1)? menuChoice+1 : maxMenuChoices-1); }
 						if (App.GetInput().IsKeyDown(sf::Key::Up)){ menuChoice = ( ((menuChoice-1)>0)? menuChoice-1 : 0); }
 						if (App.GetInput().IsKeyDown(sf::Key::Down)){ menuChoice = ( ((menuChoice+1) < maxMenuChoices-1)? menuChoice+1 : maxMenuChoices-1); }
-						if (App.GetInput().IsKeyDown(sf::Key::A)){ player->changeAttack(&axe); opponent->changeAttack(&sword); std::cout << "You got the Axe !" << std::endl; }
-						if (App.GetInput().IsKeyDown(sf::Key::S)){ player->changeAttack(&sword); opponent->changeAttack(&axe); std::cout << "You got the Sword !" << std::endl; }
+						if (App.GetInput().IsKeyDown(sf::Key::A)){ player->changeAttack(&attackOne); opponent->changeAttack(&attackTwo); std::cout << "You got the Axe !" << std::endl; }
+					//	if (App.GetInput().IsKeyDown(sf::Key::S)){ player->changeAttack(&sword); opponent->changeAttack(&axe); std::cout << "You got the Sword !" << std::endl; }
 					break;
 					default :
 						std::cout << "Should not happen in the final game." << std::endl;
@@ -265,7 +285,7 @@ int main(int argc, char** argv)
 					break;
 					default:
 						std::cout << "Wrong choice !" << std::endl;
-						opponent->takeDamage(7);
+						opponent->takeDamage(2);
 					break;
 				}
 				opponent->displayState();
@@ -311,6 +331,7 @@ int main(int argc, char** argv)
 					posOne = !posOne;
 				}
 
+				App.Draw(sf::Shape::Rectangle(10, 180, 590, 210, sf::Color(128, 192, 0), 0, sf::Color::Black)); //, sf::Color::Black, 0, sf::Color::Red);
 				App.Draw(opponentSprite);
 				App.Draw(playerSprite);
 				App.Draw(choice1);

@@ -4,23 +4,17 @@
 Agent::Agent() : m_MaxLife(5), m_Life(5), m_AbilityOne(0)
 {
 	std::cout << "Dft Ctor" << std::endl;
-	//m_AbilityOne = new Attack("None", 0, -1);
-	//m_AbilityTwo = new Attack("None", 0, -1);
-	//m_AbilityThree = new Attack("None", 0, -1);
 	int nameLength = 3+rand()%10;
 
 	m_Name = randomNameGenerator(nameLength);
 	std::cout << "Done ..." << std::endl;
 }
 
-Agent::Agent(std::string myname, int maxlife, std::string wname, int dmg, int res) : m_Name(myname), m_MaxLife(maxlife), m_Life(maxlife), m_Shield(1), m_defending(1), m_AbilityOne(0), m_AbilityTwo(0), m_AbilityThree(0) 
+Agent::Agent(std::string name, int maxlife) : m_Name(name), m_MaxLife(maxlife), m_Life(maxlife), m_Shield(1), m_defending(1), m_AbilityOne(0), m_AbilityTwo(0), m_AbilityThree(0) 
 {
 	std::cout << "Comp Ctor" << std::endl;
-	//m_AbilityOne = new Attack(wname, dmg, res);
-	//m_AbilityTwo = new Attack("None", 0, -1);
-	//m_AbilityThree = new Attack("None", 0, -1);
 	int nameLength = 3+rand()%10;
-	if(myname.empty()){ m_Name = randomNameGenerator(nameLength); }
+	if(name.empty()){ m_Name = randomNameGenerator(nameLength); }
 
 	std::cout << "Done ..." << std::endl;
 }
@@ -42,7 +36,7 @@ int Agent::getMaxLife() const { return m_MaxLife; }
 bool Agent::isAlive() const { return m_Life > 0; }
 void Agent::displayState() const
 {
-	std::cout << "I'm \033[1m" << m_Name << "\033[21m, I've \033[" << ((float(m_Life) / float(m_MaxLife) < 0.3) ? "91m" : ((float(m_Life) / float(m_MaxLife) < 0.6) ? "93m" : "92m")) << m_Life << "\033[39m/" << m_MaxLife << " HP and I'm fighting with " << ( (m_AbilityOne != 0) ? m_AbilityOne->getName() : "nothing") << " that does " << ( (m_AbilityOne != 0) ?  m_AbilityOne->getDamage() : 0) << std::endl;
+	std::cout << "I'm \033[1m" << m_Name << "\033[21m, I've \033[" << ((float(m_Life) / float(m_MaxLife) < 0.3) ? "91m" : ((float(m_Life) / float(m_MaxLife) < 0.6) ? "93m" : "92m")) << m_Life << "\033[39m/" << m_MaxLife << " HP and I'm fighting with \033[1m" << ( (m_AbilityOne != 0) ? m_AbilityOne->getType() + " " + m_AbilityOne->getName() : "nothing") << "\033[21m that does " << ( (m_AbilityOne != 0) ?  m_AbilityOne->getDamage() : 0) << std::endl;
 }
 
 void Agent::takeDamage(int value)
@@ -54,7 +48,12 @@ void Agent::takeDamage(int value)
 void Agent::attack(Agent & target)
 {
 	m_defending = 1;
-	if(m_AbilityOne != 0){ target.takeDamage(m_AbilityOne->getDamage()); }
+	if(m_AbilityOne != 0)
+	{
+		int dmg = m_AbilityOne->getAttack();
+		target.takeDamage(dmg);
+		std::cout << "attack result : " << dmg << std::endl;
+	}
 }
 
 void Agent::changeAttack(Attack * atk)
