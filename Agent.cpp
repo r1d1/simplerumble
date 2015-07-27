@@ -1,7 +1,7 @@
 #include "Agent.h"
 #include "utils.h"
 
-Agent::Agent() : m_MaxLife(5), m_Life(5), m_AbilityOne(0)
+Agent::Agent() : m_Life(5), m_MaxLife(5), m_AbilityOne(0)
 {
 	std::cout << "Dft Ctor" << std::endl;
 	int nameLength = 3+rand()%10;
@@ -10,7 +10,7 @@ Agent::Agent() : m_MaxLife(5), m_Life(5), m_AbilityOne(0)
 	std::cout << "Done ..." << std::endl;
 }
 
-Agent::Agent(std::string name, int maxlife) : m_Name(name), m_MaxLife(maxlife), m_Life(maxlife), m_Shield(1), m_defending(1), m_AbilityOne(0), m_AbilityTwo(0), m_AbilityThree(0) 
+Agent::Agent(std::string name, int maxlife) : m_Name(name), m_Life(maxlife), m_MaxLife(maxlife), m_Shield(1), m_defending(1), m_AbilityOne(0), m_AbilityTwo(0), m_AbilityThree(0) 
 {
 	std::cout << "Comp Ctor" << std::endl;
 	int nameLength = 3+rand()%10;

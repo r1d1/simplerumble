@@ -24,8 +24,6 @@ SIMPLE RUMBLE !
 
 int main(int argc, char** argv)
 {
-	int i=255;
-	int counter = 0;
 	int gameState = 0;
 	
 	srand(time(NULL));
@@ -34,23 +32,31 @@ int main(int argc, char** argv)
 	// Black screen
 	sf::RenderWindow App(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SIMPLE RUMBLE !!!");
 	
-	sf::Image opponentImage;
-	sf::Sprite opponentSprite;
-	sf::Image playerImage;
-	sf::Sprite playerSprite;
-	if (!opponentImage.LoadFromFile("images/npc1-full.png")){ std::cout << "Error when loading opponent image" << std::endl; return EXIT_FAILURE; }
-	else{ opponentSprite.SetImage(opponentImage); }
-	if (!playerImage.LoadFromFile("images/npc2-full.png")){ std::cout << "Error when loading player image" << std::endl; return EXIT_FAILURE; }
-	else{ playerSprite.SetImage(playerImage); }
+	sf::Sprite * opponentSprite;
+	sf::Sprite * playerSprite;
+	
+	sf::Image character1Image;
+	sf::Sprite character1Sprite;
+	sf::Image character2Image;
+	sf::Sprite character2Sprite;
+	if (!character1Image.LoadFromFile("images/npc1-full.png")){ std::cout << "Error when loading opponent image" << std::endl; return EXIT_FAILURE; }
+	else{ character1Sprite.SetImage(character1Image); }
+	if (!character2Image.LoadFromFile("images/npc2-full.png")){ std::cout << "Error when loading player image" << std::endl; return EXIT_FAILURE; }
+	else{ character2Sprite.SetImage(character2Image); }
 
-	opponentSprite.SetSubRect(sf::IntRect(32, 96, 64, 144));
-	playerSprite.SetSubRect(sf::IntRect(32, 48, 64, 96));
+	character1Sprite.SetSubRect(sf::IntRect(32, 96, 64, 144));
+	character2Sprite.SetSubRect(sf::IntRect(32, 48, 64, 96));
+	character1Sprite.SetScale(2.0f, 2.0f);
+	character2Sprite.SetScale(2.0f, 2.0f);
+	character1Sprite.SetPosition(WINDOW_WIDTH * 0.8 / 3, WINDOW_HEIGHT / 4);
+	character2Sprite.SetPosition(WINDOW_WIDTH * 1.8 / 3, WINDOW_HEIGHT / 4);
+	
 	bool posOne = true;
 
-	opponentSprite.SetPosition(WINDOW_WIDTH * 0.8 / 3, WINDOW_HEIGHT / 4);
-	playerSprite.SetPosition(WINDOW_WIDTH * 1.8 / 3, WINDOW_HEIGHT / 4);
-	opponentSprite.SetScale(2.0f, 2.0f);
-	playerSprite.SetScale(2.0f, 2.0f);
+//	sf::Sprite * opponentSprite;
+//	sf::Sprite * playerSprite;
+//	opponentSprite.SetPosition(WINDOW_WIDTH * 0.8 / 3, WINDOW_HEIGHT / 4);
+//	playerSprite.SetPosition(WINDOW_WIDTH * 1.8 / 3, WINDOW_HEIGHT / 4);
 
 	sf::Image axeImage;
 	sf::Sprite axeSprite;
@@ -163,7 +169,6 @@ int main(int argc, char** argv)
 	Agent character2("Averell", 70 + rand() % 30);
 
 	std::vector<Agent> characters;
-	int choice;
 
 	// ----------------------------------------
 	// Start game loop
@@ -207,8 +212,17 @@ int main(int argc, char** argv)
 						if (App.GetInput().IsKeyDown(sf::Key::Right)){ characterChoice = ( ((characterChoice+1) < maxCharacterChoices-1)? characterChoice+1 : maxCharacterChoices-1); }
 						player = ((characterChoice) ? &character1 : &character2);
 						opponent = ((characterChoice) ? &character2 : &character1);
+						playerSprite = ((characterChoice) ? &character1Sprite : &character2Sprite);
+						opponentSprite = ((characterChoice) ? &character2Sprite : &character1Sprite);
+						
+
 						std::cout << "character choice " << characterChoice << std::endl;
-						if (App.GetInput().IsKeyDown(sf::Key::Return)){ gameState = 2; }
+						if (App.GetInput().IsKeyDown(sf::Key::Return))
+						{
+							gameState = 2;
+							opponentSprite->SetPosition(WINDOW_WIDTH * 0.8 / 3, WINDOW_HEIGHT / 4);
+							playerSprite->SetPosition(WINDOW_WIDTH * 1.8 / 3, WINDOW_HEIGHT / 4);
+						}
 					break;
 					case 2 : // Switching on options :
 						if (App.GetInput().IsKeyDown(sf::Key::Return)){ validatedChoice = true; }
@@ -327,7 +341,10 @@ int main(int argc, char** argv)
 				App.Draw(choice0);
 			break;
 			case 1 :
-				opponentSprite.SetSubRect(sf::IntRect(0, 0, 32, 48));
+				//opponentSprite->SetSubRect(sf::IntRect(0, 0, 32, 48));
+				//playerSprite->SetSubRect(sf::IntRect(0, 0, 32, 48));
+				character1Sprite.SetSubRect(sf::IntRect(0, 0, 32, 48));
+				character2Sprite.SetSubRect(sf::IntRect(0, 0, 32, 48));
 				App.Draw(char1Name);
 				App.Draw(char1MaxLife);
 				App.Draw(char1Shield);
@@ -335,9 +352,8 @@ int main(int argc, char** argv)
 				App.Draw(char2MaxLife);
 				App.Draw(char2Shield);
 
-				playerSprite.SetSubRect(sf::IntRect(0, 0, 32, 48));
-				App.Draw(opponentSprite);
-				App.Draw(playerSprite);
+				App.Draw(character1Sprite);
+				App.Draw(character2Sprite);
 			break;
 			case 2 :
 				cumulativeTime += elapsedTime;
@@ -346,14 +362,14 @@ int main(int argc, char** argv)
 					if( posOne )
 					{
 						// Animation of Sprites
-						opponentSprite.SetSubRect(sf::IntRect(0, 96, 32, 144));
-						playerSprite.SetSubRect(sf::IntRect(64, 48, 96, 96));
+						opponentSprite->SetSubRect(sf::IntRect(0, 96, 32, 144));
+						playerSprite->SetSubRect(sf::IntRect(64, 48, 96, 96));
 //						std::cout << cumulativeTime << std::endl;
 					}
 					else
 					{
-						opponentSprite.SetSubRect(sf::IntRect(32, 96, 64, 144));
-						playerSprite.SetSubRect(sf::IntRect(32, 48, 64, 96));
+						opponentSprite->SetSubRect(sf::IntRect(32, 96, 64, 144));
+						playerSprite->SetSubRect(sf::IntRect(32, 48, 64, 96));
 //						std::cout << cumulativeTime << std::endl;
 					}
 					cumulativeTime = 0.0;
@@ -361,8 +377,8 @@ int main(int argc, char** argv)
 				}
 
 				App.Draw(sf::Shape::Rectangle(10, 180, 590, 210, sf::Color(128, 192, 0), 0, sf::Color::Black)); //, sf::Color::Black, 0, sf::Color::Red);
-				App.Draw(opponentSprite);
-				App.Draw(playerSprite);
+				App.Draw(*opponentSprite);
+				App.Draw(*playerSprite);
 				App.Draw(choice1);
 				App.Draw(choice2);
 				App.Draw(choice3);
