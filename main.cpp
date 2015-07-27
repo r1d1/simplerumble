@@ -159,16 +159,16 @@ int main(int argc, char** argv)
 
 	//player = new Agent("", 100, "Wooden sword", 3, 500);
 	//opponent = new Agent("", 90, "Axe", 4, 500);
-	player = new Agent("", 70 + rand() % 30);
-	opponent = new Agent("", 70 + rand() % 30);
+	Agent character1("Joe", 70 + rand() % 30);
+	Agent character2("Averell", 70 + rand() % 30);
 
 	std::vector<Agent> characters;
 	int choice;
 
 	// ----------------------------------------
 	// Start game loop
-	opponent->displayState();
-	player->displayState();
+	//opponent->displayState();
+	//player->displayState();
 	float cumulativeTime = 0.0;
 	float cursorPosX=0.0, cursorPosY=0.0;
 	cursorSprite.SetPosition(cursorPosX, cursorPosY);
@@ -205,6 +205,8 @@ int main(int argc, char** argv)
 					case 1 : // Character Selection
 						if (App.GetInput().IsKeyDown(sf::Key::Left)){ characterChoice = ( ((characterChoice-1)>0)? characterChoice-1 : 0); }
 						if (App.GetInput().IsKeyDown(sf::Key::Right)){ characterChoice = ( ((characterChoice+1) < maxCharacterChoices-1)? characterChoice+1 : maxCharacterChoices-1); }
+						player = ((characterChoice) ? &character1 : &character2);
+						opponent = ((characterChoice) ? &character2 : &character1);
 						std::cout << "character choice " << characterChoice << std::endl;
 						if (App.GetInput().IsKeyDown(sf::Key::Return)){ gameState = 2; }
 					break;
@@ -347,8 +349,10 @@ int main(int argc, char** argv)
 		App.Display();
 	}
 
-	delete player;
-	delete opponent;
+	//delete player;
+	//delete opponent;
+	// Reseting pointers (not useful ?)
+	player = opponent = 0;
 
 	return EXIT_SUCCESS;
 }
