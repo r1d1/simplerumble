@@ -297,6 +297,26 @@ int main(int argc, char** argv)
 		//if(cumulativeTime > 2.0){ posOne = !posOne; }
 		cursorSprite.SetPosition(cursorPosX, cursorPosY);
 		App.Clear(sf::Color::Black);
+		sf::String char1Name(character1.getName());
+		sf::String char1MaxLife(std::to_string(character1.getMaxLife()));
+		sf::String char1Shield(std::to_string(character1.getShield()));
+		char1Name.SetPosition(WINDOW_WIDTH * 0.4 / 3, WINDOW_HEIGHT / 4);
+		char1Name.SetSize(24);
+		char1MaxLife.SetPosition(WINDOW_WIDTH * 0.4 / 3, WINDOW_HEIGHT * 1.5 / 4);
+		char1MaxLife.SetSize(24);
+		char1Shield.SetPosition(WINDOW_WIDTH * 0.4 / 3, WINDOW_HEIGHT * 2 / 4);
+		char1Shield.SetSize(24);
+	
+		sf::String char2Name(character2.getName());
+		sf::String char2MaxLife(std::to_string(character2.getMaxLife()));
+		sf::String char2Shield(std::to_string(character2.getShield()));
+		char2Name.SetPosition(WINDOW_WIDTH * 2.2 / 3, WINDOW_HEIGHT / 4);
+		char2Name.SetSize(24);
+		char2MaxLife.SetPosition(WINDOW_WIDTH * 2.2 / 3, WINDOW_HEIGHT * 1.5 / 4);
+		char2MaxLife.SetSize(24);
+		char2Shield.SetPosition(WINDOW_WIDTH * 2.2 / 3, WINDOW_HEIGHT * 2 / 4);
+		char2Shield.SetSize(24);
+		
 		switch(gameState)
 		{
 			case 0:
@@ -308,6 +328,13 @@ int main(int argc, char** argv)
 			break;
 			case 1 :
 				opponentSprite.SetSubRect(sf::IntRect(0, 0, 32, 48));
+				App.Draw(char1Name);
+				App.Draw(char1MaxLife);
+				App.Draw(char1Shield);
+				App.Draw(char2Name);
+				App.Draw(char2MaxLife);
+				App.Draw(char2Shield);
+
 				playerSprite.SetSubRect(sf::IntRect(0, 0, 32, 48));
 				App.Draw(opponentSprite);
 				App.Draw(playerSprite);

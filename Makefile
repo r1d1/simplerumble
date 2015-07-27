@@ -1,4 +1,5 @@
 VERSION = alpha
+CXXFLAGS=-g -std=c++0x -Wall -pedantic
 #PATHTOSFML=/usr/local/SFML-2.2
 PATHTOSFML=
 all : SimpleRumble 

@@ -31,8 +31,10 @@ Agent::~Agent()
 	m_AbilityOne = m_AbilityTwo = m_AbilityThree = 0;
 }
 
+std::string Agent::getName() const { return m_Name; }
 int Agent::getLife() const { return m_Life; }
 int Agent::getMaxLife() const { return m_MaxLife; }
+int Agent::getShield() const { return m_Shield; }
 bool Agent::isAlive() const { return m_Life > 0; }
 void Agent::displayState() const
 {

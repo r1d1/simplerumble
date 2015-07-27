@@ -24,8 +24,10 @@ class Agent
 		Agent();
 		Agent(std::string, int);
 		~Agent();
+		std::string getName() const;
 		int getLife() const;
 		int getMaxLife() const;
+		int getShield() const;
 		bool isAlive() const;
 		void displayState() const;
 
