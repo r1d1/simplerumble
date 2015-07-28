@@ -210,8 +210,8 @@ int main(int argc, char** argv)
 					case 1 : // Character Selection
 						if (App.GetInput().IsKeyDown(sf::Key::Left)){ characterChoice = ( ((characterChoice-1)>0)? characterChoice-1 : 0); }
 						if (App.GetInput().IsKeyDown(sf::Key::Right)){ characterChoice = ( ((characterChoice+1) < maxCharacterChoices-1)? characterChoice+1 : maxCharacterChoices-1); }
-						player = ((characterChoice) ? &character1 : &character2);
-						opponent = ((characterChoice) ? &character2 : &character1);
+						player = ((!characterChoice) ? &character1 : &character2);
+						opponent = ((!characterChoice) ? &character2 : &character1);
 						playerSprite = ((characterChoice) ? &character1Sprite : &character2Sprite);
 						opponentSprite = ((characterChoice) ? &character2Sprite : &character1Sprite);
 						
@@ -304,11 +304,12 @@ int main(int argc, char** argv)
 						opponent->takeDamage(2);
 					break;
 				}
-				opponent->displayState();
+				std::cout << "Player state : " << std::endl;
 				player->displayState();
+				std::cout << "Opponent state : " << std::endl;
+				opponent->displayState();
 			}
 		}
-		//if(cumulativeTime > 2.0){ posOne = !posOne; }
 		cursorSprite.SetPosition(cursorPosX, cursorPosY);
 		App.Clear(sf::Color::Black);
 		sf::String char1Name(character1.getName());
