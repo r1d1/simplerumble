@@ -165,8 +165,8 @@ int main(int argc, char** argv)
 
 	//player = new Agent("", 100, "Wooden sword", 3, 500);
 	//opponent = new Agent("", 90, "Axe", 4, 500);
-	Agent character1("Joe", 70 + rand() % 30);
-	Agent character2("Averell", 70 + rand() % 30);
+	Agent character1("", 70 + rand() % 30);
+	Agent character2("", 70 + rand() % 30);
 
 	std::vector<Agent> characters;
 
