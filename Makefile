@@ -6,7 +6,6 @@ all : SimpleRumble
 
 #export LD_LIBRARY_PATH=${PATHTOSFML}/lib:$LD_LIBRARY_PATH
 
-#SimpleRumble : main.o guiStuff.o
 SimpleRumble : main.o Agent.o Attack.o utils.o
 	g++ *.o -o SimpleRumble_${VERSION} -L${PATHTOSFML}/lib -lsfml-system -lsfml-graphics -lsfml-network -lsfml-audio -lsfml-window
 	rm *.o

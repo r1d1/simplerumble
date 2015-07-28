@@ -3,9 +3,10 @@
 std::string randomNameGenerator(int length)
 {
 	std::string alphabet="aeiouybcdfghjklmnpqrstvwxz";
-	int firstLetter = rand() % alphabet.size();
+	std::string alphabetUp="AEIOUYBCDFGHJKLMNPQRSTVWXZ";
+	int firstLetter = rand() % alphabetUp.size();
 	std::string heroName = "";
-	heroName += alphabet.at(firstLetter);
+	heroName += (alphabetUp.at(firstLetter));
 	for(int letter=1 ; letter < length ; letter++)
 	{
 		// vowel or consonant ?
