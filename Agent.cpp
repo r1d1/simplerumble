@@ -40,6 +40,11 @@ void Agent::displayState() const
 {
 	std::cout << "I'm \033[1m" << m_Name << "\033[21m, I've \033[" << ((float(m_Life) / float(m_MaxLife) < 0.3) ? "91m" : ((float(m_Life) / float(m_MaxLife) < 0.6) ? "93m" : "92m")) << m_Life << "\033[39m/" << m_MaxLife << " HP and I'm fighting with \033[1m" << ( (m_AbilityOne != 0) ? m_AbilityOne->getType() + " " + m_AbilityOne->getName() : "nothing") << "\033[21m that does " << ( (m_AbilityOne != 0) ?  m_AbilityOne->getDamage() : 0) << std::endl;
 }
+void Agent::resetCharacter()
+{ 
+	m_Life = m_MaxLife;
+	m_AbilityOne = m_AbilityTwo = m_AbilityThree = 0;
+}
 
 void Agent::takeDamage(int value)
 {

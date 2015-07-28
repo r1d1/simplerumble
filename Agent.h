@@ -31,6 +31,7 @@ class Agent
 		bool isAlive() const;
 		void displayState() const;
 
+		void resetCharacter();
 
 		void takeDamage(int value);
 		void attack(Agent & target);
