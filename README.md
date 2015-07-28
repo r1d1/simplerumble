@@ -5,6 +5,6 @@ Fight survival game
 
 **Concept :**
 
-Fight hords of coming monsters and survive the longest time possible.
+Choose a character, fight your opponent, start again and enjoy!
 
 In C++ w/ SFML 1.6 (binary install with Ubuntu 12.04)
