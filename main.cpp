@@ -17,10 +17,12 @@ SIMPLE RUMBLE !
 #include "Attack.h"
 #include "utils.h"
 
+#define APP_VERSION 0.1
+#define APP_STATUS "beta"
+
 #define SPEED 1000
 #define WINDOW_WIDTH 600
 #define WINDOW_HEIGHT 400
-//#define WINDOW_HEIGHT 200
 
 int main(int argc, char** argv)
 {
@@ -68,8 +70,10 @@ int main(int argc, char** argv)
 	// ##### TITLE Interface #####
 	// State 0
 	sf::String titleText;
-	titleText.SetText("SIMPLE RUMBLE !");
-	titleText.SetSize(48);
+	std::string titleString = "SIMPLE RUMBLE !" + std::string(APP_STATUS) + std::to_string(APP_VERSION);
+	titleText.SetText(titleString);
+	//titleText.SetText(std::string("SIMPLE RUMBLE !"));
+	titleText.SetSize(36);
 	titleText.SetRotation(20);
 //	titleText.SetCenter(WINDOW_WIDTH * 3/10, WINDOW_HEIGHT *2/10);
 	titleText.SetPosition(WINDOW_WIDTH * 1.0/5, WINDOW_HEIGHT * 2.5/5);
