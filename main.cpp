@@ -18,7 +18,7 @@ SIMPLE RUMBLE !
 #include "utils.h"
 
 #define APP_VERSION 0.1
-#define APP_STATUS "beta"
+#define APP_STATUS "b"
 
 #define SPEED 1000
 #define WINDOW_WIDTH 600
@@ -70,7 +70,7 @@ int main(int argc, char** argv)
 	// ##### TITLE Interface #####
 	// State 0
 	sf::String titleText;
-	std::string titleString = "SIMPLE RUMBLE !" + std::string(APP_STATUS) + std::to_string(APP_VERSION);
+	std::string titleString = "SIMPLE RUMBLE !"; // + std::string(APP_STATUS) + std::to_string(APP_VERSION);
 	titleText.SetText(titleString);
 	//titleText.SetText(std::string("SIMPLE RUMBLE !"));
 	titleText.SetSize(36);
@@ -380,9 +380,11 @@ int main(int argc, char** argv)
 		float opponentRatio = 0.0;
 		if( player && (player->getMaxLife() != 0) ){ playerRatio = float(player->getLife()) / player->getMaxLife(); }
 		if( opponent && (opponent->getMaxLife() !=0) ){ opponentRatio = float(opponent->getLife()) / opponent->getMaxLife(); }
-		sf::String playerLifeDisplay(std::to_string(player->getLife()));
+		sf::String playerLifeDisplay("0");
+		if( player ){ playerLifeDisplay.SetText(std::to_string(player->getLife())); }
 		playerLifeDisplay.SetPosition(10, 10);
-		sf::String opponentLifeDisplay(std::to_string(opponent->getLife()));
+		sf::String opponentLifeDisplay("0");
+		if( opponent ){ opponentLifeDisplay.SetText(std::to_string(opponent->getLife())); }
 		opponentLifeDisplay.SetPosition(WINDOW_WIDTH-40, 10);
 
 //		std::cout << playerRatio << " " << opponentRatio << std::endl;
