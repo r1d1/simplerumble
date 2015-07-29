@@ -376,7 +376,11 @@ int main(int argc, char** argv)
 		float opponentRatio = 0.0;
 		if( player && (player->getMaxLife() != 0) ){ playerRatio = float(player->getLife()) / player->getMaxLife(); }
 		if( opponent && (opponent->getMaxLife() !=0) ){ opponentRatio = float(opponent->getLife()) / opponent->getMaxLife(); }
-	
+		sf::String playerLifeDisplay(std::to_string(player->getLife()));
+		playerLifeDisplay.SetPosition(10, 10);
+		sf::String opponentLifeDisplay(std::to_string(opponent->getLife()));
+		opponentLifeDisplay.SetPosition(WINDOW_WIDTH-40, 10);
+
 //		std::cout << playerRatio << " " << opponentRatio << std::endl;
 		switch(gameState)
 		{
@@ -415,7 +419,7 @@ int main(int argc, char** argv)
 			break;
 			case 2 :
 				App.Clear(sf::Color(0, 192, 255));
-				if(cumulativeTime > 0.5)
+				if(cumulativeTime > 0.25)
 				{
 					if( posOne )
 					{
@@ -435,7 +439,9 @@ int main(int argc, char** argv)
 				// Life slot
 
 				App.Draw(sf::Shape::Circle(10, 10, 50, sf::Color((1.0 - playerRatio) * 255, playerRatio * 255, 0), 5, sf::Color(255, 255, 255))); //, sf::Color::Black, 0, sf::Color::Red);
+				App.Draw(playerLifeDisplay);
 				App.Draw(sf::Shape::Circle(WINDOW_WIDTH-10, 10, 50, sf::Color((1.0 - opponentRatio) * 255, opponentRatio * 255, 0), 5, sf::Color(255, 255, 255))); //, sf::Color::Black, 0, sf::Color::Red);
+				App.Draw(opponentLifeDisplay);
 				
 				// BG :
 				App.Draw(sf::Shape::Rectangle(0, WINDOW_HEIGHT * 0.8/2, WINDOW_WIDTH, WINDOW_HEIGHT, sf::Color(192, 128, 64), 0, sf::Color(128,128,0))); //, sf::Color::Black, 0, sf::Color::Red);
